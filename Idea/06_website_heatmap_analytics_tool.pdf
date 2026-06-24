@@ -1,0 +1,67 @@
+%PDF-1.4
+%‚„œ”
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [5 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>
+endobj
+5 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 6 0 R >>
+endobj
+6 0 obj
+<< /Length 3116 >>
+stream
+BT /F2 16 Tf 1 0 0 1 52 790 Tm (Website Heatmap and User Interaction Analytics Tool) Tj ET
+BT /F2 12 Tf 1 0 0 1 52 750 Tm (Idea Summary) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 730 Tm (Build a third-party website analytics tool that works like a thin layer over a website.) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 715 Tm (Website owners install a small script, and the tool tracks how users interact with pages,) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 700 Tm (including cursor movement, clicks, ignored sections, scroll behavior, and areas where users) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 685 Tm (spend attention. The data becomes heatmaps and reports for marketers, designers, reviewers,) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 670 Tm (and product teams.) Tj ET
+BT /F2 12 Tf 1 0 0 1 52 640 Tm (Problem) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 620 Tm (Many teams know how many people visit a website, but they do not clearly see how users) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 605 Tm (behave on the page. They may not know which buttons get attention, which sections users) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 590 Tm (skip, where users hesitate, or why a page does not convert well.) Tj ET
+BT /F2 12 Tf 1 0 0 1 52 560 Tm (Solution) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 540 Tm (Create a lightweight analytics script that can be integrated into any website. The script) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 525 Tm (collects interaction signals and sends them to a dashboard. The dashboard displays heatmaps,) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 510 Tm (click maps, scroll maps, and session-level insights so teams can improve layout, content,) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 495 Tm (calls to action, and user experience.) Tj ET
+BT /F2 12 Tf 1 0 0 1 52 465 Tm (How We Can Build It) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 445 Tm (Start with a JavaScript tracking snippet that records clicks, cursor movement, scrolling,) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 430 Tm (viewport size, page URL, and element positions. Send the events to a backend API. Build a) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 415 Tm (dashboard where website owners can select a page and view heatmap overlays. Later, add) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 400 Tm (filters by device, location, traffic source, and date range.) Tj ET
+BT /F2 12 Tf 1 0 0 1 52 370 Tm (MVP Features) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 350 Tm (- Website install script for customers.) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 320 Tm (- Click tracking and cursor movement tracking.) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 290 Tm (- Scroll-depth tracking and ignored-section detection.) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 260 Tm (- Dashboard with page list and heatmap view.) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 230 Tm (- Basic analytics report for marketers and reviewers.) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 200 Tm (- Privacy controls to avoid collecting sensitive input data.) Tj ET
+BT /F2 12 Tf 1 0 0 1 52 170 Tm (Potential Customers) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 150 Tm (Marketing teams, website owners, ecommerce businesses, UI/UX reviewers, product teams,) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 135 Tm (agencies, and startups that want to improve conversion and user experience.) Tj ET
+endstream
+endobj
+xref
+0 7
+0000000000 65535 f 
+0000000015 00000 n 
+0000000064 00000 n 
+0000000121 00000 n 
+0000000191 00000 n 
+0000000266 00000 n 
+0000000402 00000 n 
+trailer
+<< /Size 7 /Root 1 0 R >>
+startxref
+3570
+%%EOF

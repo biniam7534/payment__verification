@@ -1,0 +1,82 @@
+%PDF-1.4
+%‚„œ”
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [5 0 R 7 0 R] /Count 2 >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>
+endobj
+5 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 6 0 R >>
+endobj
+6 0 obj
+<< /Length 3470 >>
+stream
+BT /F2 16 Tf 1 0 0 1 52 790 Tm (Accounting Productivity Assistant) Tj ET
+BT /F2 12 Tf 1 0 0 1 52 750 Tm (Idea Summary) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 730 Tm (Build a productivity tool for accountants, similar in spirit to how Cursor and Anthropic) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 715 Tm (tools help coders. The software will help accountants complete common accounting tasks) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 700 Tm (faster, including creating Excel files, editing Excel files, reviewing reports, summarizing) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 685 Tm (financial documents, converting images to Excel, and answering accounting workflow) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 670 Tm (questions. It should support Amharic and Afaan Oromo so local users can work in their own) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 655 Tm (language.) Tj ET
+BT /F2 12 Tf 1 0 0 1 52 625 Tm (Problem) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 605 Tm (Accountants spend a lot of time on repetitive document and spreadsheet work. Many tasks) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 590 Tm (require moving data between receipts, images, reports, and Excel. Existing AI tools are) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 575 Tm (often general, not built around accounting workflows, and may not support local languages) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 560 Tm (well.) Tj ET
+BT /F2 12 Tf 1 0 0 1 52 530 Tm (Solution) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 510 Tm (Create an AI-powered accounting workspace that understands accounting tasks and spreadsheet) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 495 Tm (operations. A user can upload files or images, ask for actions in Amharic, Afaan Oromo, or) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 480 Tm (English, and the tool can produce clean Excel outputs, summaries, checks, and suggested) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 465 Tm (corrections.) Tj ET
+BT /F2 12 Tf 1 0 0 1 52 435 Tm (How We Can Build It) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 415 Tm (Begin with a web app where accountants upload Excel, PDF, or image files. Add chat-based) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 400 Tm (commands for simple tasks such as summarize this report, convert this receipt image to) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 385 Tm (Excel, clean this sheet, create a monthly expense summary, or review this spreadsheet for) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 370 Tm (mistakes. Connect the AI layer with spreadsheet processing tools so results can be) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 355 Tm (downloaded as Excel files. Later, add templates for tax, payroll, inventory, bank) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 340 Tm (reconciliation, and financial reporting.) Tj ET
+BT /F2 12 Tf 1 0 0 1 52 310 Tm (MVP Features) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 290 Tm (- Upload Excel, PDF, and image files.) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 260 Tm (- Image or receipt to Excel conversion.) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 230 Tm (- Excel editing by natural language command.) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 200 Tm (- Financial report summarization.) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 170 Tm (- Basic review for missing values, duplicates, and calculation issues.) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 140 Tm (- Amharic and Afaan Oromo language support for commands and explanations.) Tj ET
+BT /F2 12 Tf 1 0 0 1 52 110 Tm (Potential Customers) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 90 Tm (Accounting firms, small businesses, finance departments, bookkeepers, auditors, schools,) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 75 Tm (NGOs, and entrepreneurs who manage finance data in spreadsheets.) Tj ET
+endstream
+endobj
+7 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 8 0 R >>
+endobj
+8 0 obj
+<< /Length 0 >>
+stream
+
+endstream
+endobj
+xref
+0 9
+0000000000 65535 f 
+0000000015 00000 n 
+0000000064 00000 n 
+0000000127 00000 n 
+0000000197 00000 n 
+0000000272 00000 n 
+0000000408 00000 n 
+0000003930 00000 n 
+0000004066 00000 n 
+trailer
+<< /Size 9 /Root 1 0 R >>
+startxref
+4115
+%%EOF

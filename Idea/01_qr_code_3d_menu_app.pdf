@@ -1,0 +1,66 @@
+%PDF-1.4
+%‚„œ”
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [5 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>
+endobj
+5 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 6 0 R >>
+endobj
+6 0 obj
+<< /Length 3039 >>
+stream
+BT /F2 16 Tf 1 0 0 1 52 790 Tm (QR Code 3D Menu App for Restaurants, Cafes, and Hotels) Tj ET
+BT /F2 12 Tf 1 0 0 1 52 750 Tm (Idea Summary) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 730 Tm (Build a QR code menu system for restaurants, cafes, and hotels. Each business gets its own) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 715 Tm (digital menu. When a customer scans the QR code, the menu opens on their phone and shows) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 700 Tm (food items in 3D or AR on the table. Customers can swipe between foods, view details, and) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 685 Tm (better understand what they are ordering before they buy.) Tj ET
+BT /F2 12 Tf 1 0 0 1 52 655 Tm (Problem) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 635 Tm (Many restaurants still use static paper menus or simple PDF menus. Customers often cannot) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 620 Tm (clearly imagine the size, look, or ingredients of a dish. This can reduce confidence, slow) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 605 Tm (ordering, and create disappointment when the food arrives different from what the customer) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 590 Tm (expected.) Tj ET
+BT /F2 12 Tf 1 0 0 1 52 560 Tm (Solution) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 540 Tm (Create a web-based QR menu platform where each restaurant can upload menu items, prices,) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 525 Tm (descriptions, photos, and 3D models. Customers scan the table QR code, open the menu in a) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 510 Tm (browser, and preview selected dishes in 3D on their table. The experience should be simple,) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 495 Tm (fast, and not require installing an app.) Tj ET
+BT /F2 12 Tf 1 0 0 1 52 465 Tm (How We Can Build It) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 445 Tm (Start with a web app for restaurant admins to create menus and generate QR codes. Build a) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 430 Tm (customer menu page with categories, food details, and swipe navigation. Add 3D viewing using) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 415 Tm (web-based 3D technology, then improve into AR table placement for supported phones. For the) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 400 Tm (first MVP, use a few sample 3D food models and test with one restaurant or cafe.) Tj ET
+BT /F2 12 Tf 1 0 0 1 52 370 Tm (MVP Features) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 350 Tm (- Restaurant profile and menu management.) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 320 Tm (- QR code generation for each restaurant or table.) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 290 Tm (- Customer menu page with food images, price, ingredients, and descriptions.) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 260 Tm (- 3D food preview with swipe to change items.) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 230 Tm (- Simple admin dashboard for updating menu content.) Tj ET
+BT /F2 12 Tf 1 0 0 1 52 200 Tm (Potential Customers) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 180 Tm (Restaurants, cafes, hotels, lounges, and tourism-focused food businesses that want a modern) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 165 Tm (menu experience and better customer engagement.) Tj ET
+endstream
+endobj
+xref
+0 7
+0000000000 65535 f 
+0000000015 00000 n 
+0000000064 00000 n 
+0000000121 00000 n 
+0000000191 00000 n 
+0000000266 00000 n 
+0000000402 00000 n 
+trailer
+<< /Size 7 /Root 1 0 R >>
+startxref
+3493
+%%EOF

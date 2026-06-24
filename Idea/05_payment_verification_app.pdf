@@ -1,0 +1,51 @@
+%PDF-1.4
+%‚„œ”
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [5 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>
+endobj
+5 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 6 0 R >>
+endobj
+6 0 obj
+<< /Length 1486 >>
+stream
+BT /F2 16 Tf 1 0 0 1 52 790 Tm (Payment Verification App) Tj ET
+BT /F2 12 Tf 1 0 0 1 52 750 Tm (Idea Summary) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 730 Tm (Build an app that helps businesses verify whether a payment has really gone through or not.) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 715 Tm (The goal is to reduce fake payment screenshots, manual checking, and confusion during sales) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 700 Tm (or service delivery.) Tj ET
+BT /F2 12 Tf 1 0 0 1 52 670 Tm (Small Description) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 650 Tm (For now, this idea can stay simple. The app could connect with supported payment providers,) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 635 Tm (bank notification systems, or transaction references to confirm payment status. A seller or) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 620 Tm (staff member enters or scans a payment reference, and the system returns whether the payment) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 605 Tm (is successful, pending, failed, or unknown.) Tj ET
+BT /F2 12 Tf 1 0 0 1 52 575 Tm (Possible First Version) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 555 Tm (A basic dashboard where staff can enter transaction reference numbers, customer phone) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 540 Tm (numbers, or receipt IDs. The system checks available records and shows the result clearly.) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 525 Tm (More details can be added later after deciding which payment providers or banks to support) Tj ET
+BT /F1 10.5 Tf 1 0 0 1 52 510 Tm (first.) Tj ET
+endstream
+endobj
+xref
+0 7
+0000000000 65535 f 
+0000000015 00000 n 
+0000000064 00000 n 
+0000000121 00000 n 
+0000000191 00000 n 
+0000000266 00000 n 
+0000000402 00000 n 
+trailer
+<< /Size 7 /Root 1 0 R >>
+startxref
+1940
+%%EOF
