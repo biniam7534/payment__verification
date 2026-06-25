@@ -1,0 +1,278 @@
+<!doctype html><html><head><meta charset='utf-8'><title>Blue X V1 Role Document</title><style>
+@page { size: A4; margin: 18mm; }
+* { box-sizing: border-box; }
+body { margin: 0; color: #1f2933; background: #fff; font-family: Arial, Helvetica, sans-serif; font-size: 11.5pt; line-height: 1.55; }
+h1, h2, h3 { color: #111827; line-height: 1.25; }
+h1 { margin: 0 0 8px; font-size: 24pt; }
+h2 { margin: 26px 0 10px; padding-bottom: 5px; border-bottom: 1px solid #d9dee7; font-size: 15pt; }
+h3 { margin: 18px 0 8px; font-size: 12.5pt; }
+p { margin: 0 0 10px; }
+ul, ol { margin: 8px 0 12px 22px; padding: 0; }
+li { margin: 4px 0; }
+blockquote { margin: 14px 0; padding: 10px 14px; border-left: 4px solid #9ca3af; background: #f8fafc; }
+pre { margin: 10px 0 14px; padding: 12px; border: 1px solid #d9dee7; border-radius: 8px; background: #f8fafc; white-space: pre-wrap; word-break: break-word; font-size: 9.5pt; }
+code { font-family: Consolas, Monaco, monospace; font-size: 9.5pt; }
+p code, li code { background: #f1f5f9; border: 1px solid #e5e7eb; border-radius: 4px; padding: 1px 4px; }
+hr { border: 0; border-top: 1px solid #d9dee7; margin: 20px 0; }
+.title-block { padding: 18px; border: 1px solid #d9dee7; border-radius: 12px; background: #f7f9fc; margin-bottom: 22px; }
+</style></head><body><div class='title-block'><h1>Blue X V1 Role Document</h1></div>
+<h2>Backend Developer</h2>
+<p>This document explains the backend responsibility for Version 1 of the Blue X payment verification app.</p>
+<p>The backend is the source of truth. It handles authentication, validation, payment verification, provider API calls, saving data, duplicate detection, dashboard summaries, and security rules.</p>
+<hr>
+<h2>Main Goal</h2>
+<p>Build a Django REST backend that allows the mobile app to:</p>
+<ul>
+<li>Register and login users</li>
+<li>Load/update profile and business details</li>
+<li>Submit payment verification requests</li>
+<li>Receive clean verification results</li>
+<li>Save transaction history</li>
+<li>Load dashboard summaries and transaction history</li>
+</ul>
+<hr>
+<h2>Backend Structure</h2>
+<p>Backend structure for V1:</p>
+<pre><code>backend/
+  accounts/
+    models.py
+    serializers.py
+    views.py
+    urls.py
+    permissions.py
+
+  verification/
+    models.py
+    serializers.py
+    views.py
+    urls.py
+    services.py
+    providers/
+      base.py
+      qbirr.py
+      odit.py
+      verify_et.py
+
+  analytics/
+    services.py
+    serializers.py
+    views.py
+    urls.py</code></pre>
+<p>It is okay to add more files if needed, but keep the project small and readable.</p>
+<hr>
+<h2>Accounts App</h2>
+<p>The <code>accounts</code> app handles user account and business profile.</p>
+<p>Models:</p>
+<ul>
+<li>User or CustomUser</li>
+<li>BusinessProfile</li>
+</ul>
+<p>User fields:</p>
+<ul>
+<li><code>id</code></li>
+<li><code>full_name</code></li>
+<li><code>phone_number</code></li>
+<li><code>email</code></li>
+<li><code>password</code></li>
+<li><code>is_active</code></li>
+<li><code>created_at</code></li>
+<li><code>updated_at</code></li>
+</ul>
+<p>BusinessProfile fields:</p>
+<ul>
+<li><code>id</code></li>
+<li><code>user</code></li>
+<li><code>business_name</code></li>
+<li><code>business_type</code></li>
+<li><code>receiver_name</code></li>
+<li><code>receiver_account</code></li>
+<li><code>default_provider</code></li>
+<li><code>created_at</code></li>
+<li><code>updated_at</code></li>
+</ul>
+<p>Serializers:</p>
+<ul>
+<li>RegisterSerializer</li>
+<li>LoginSerializer</li>
+<li>UserSerializer</li>
+<li>BusinessProfileSerializer</li>
+<li>ProfileSerializer</li>
+</ul>
+<p>Views:</p>
+<ul>
+<li>RegisterView</li>
+<li>LoginView</li>
+<li>LogoutView</li>
+<li>ProfileView</li>
+</ul>
+<p>APIs:</p>
+<pre><code>POST /api/accounts/register/
+POST /api/accounts/login/
+POST /api/accounts/logout/
+GET /api/accounts/profile/
+PUT /api/accounts/profile/</code></pre>
+<p>Rules:</p>
+<ul>
+<li>Passwords must be hashed.</li>
+<li>Do not save plain text passwords.</li>
+<li>User must be logged in to access profile.</li>
+<li>User can only access their own profile.</li>
+<li>V1 can skip phone number OTP verification.</li>
+<li>Phone number format should still be validated.</li>
+</ul>
+<hr>
+<h2>Verification App</h2>
+<p>The <code>verification</code> app handles the core payment verification loop.</p>
+<p>Models:</p>
+<ul>
+<li>VerificationTransaction</li>
+<li>ScanUsage</li>
+</ul>
+<p>VerificationTransaction fields:</p>
+<ul>
+<li><code>id</code></li>
+<li><code>user</code></li>
+<li><code>business_profile</code></li>
+<li><code>provider</code></li>
+<li><code>bank_name</code></li>
+<li><code>receipt_id</code></li>
+<li><code>transaction_reference</code></li>
+<li><code>receipt_url</code></li>
+<li><code>sender_name</code></li>
+<li><code>sender_phone</code></li>
+<li><code>receiver_name</code></li>
+<li><code>receiver_account</code></li>
+<li><code>amount</code></li>
+<li><code>currency</code></li>
+<li><code>status</code></li>
+<li><code>verified_at</code></li>
+<li><code>provider_transaction_date</code></li>
+<li><code>raw_provider_response</code></li>
+<li><code>failure_reason</code></li>
+<li><code>is_duplicate</code></li>
+<li><code>created_at</code></li>
+<li><code>updated_at</code></li>
+</ul>
+<p>Allowed statuses:</p>
+<ul>
+<li><code>verified</code></li>
+<li><code>pending</code></li>
+<li><code>failed</code></li>
+<li><code>unknown</code></li>
+</ul>
+<p>ScanUsage fields:</p>
+<ul>
+<li><code>id</code></li>
+<li><code>user</code></li>
+<li><code>month</code></li>
+<li><code>scan_count</code></li>
+<li><code>free_limit</code></li>
+<li><code>created_at</code></li>
+<li><code>updated_at</code></li>
+</ul>
+<p>Serializers:</p>
+<ul>
+<li>VerificationRequestSerializer</li>
+<li>VerificationTransactionSerializer</li>
+<li>TransactionHistorySerializer</li>
+<li>DashboardSummarySerializer</li>
+</ul>
+<p>Views:</p>
+<ul>
+<li>VerifyPaymentView</li>
+<li>TransactionHistoryView</li>
+<li>DashboardSummaryView</li>
+</ul>
+<p>Services:</p>
+<ul>
+<li>Provider selection service</li>
+<li>Provider API call service</li>
+<li>Response normalization service</li>
+<li>Save verification transaction service</li>
+<li>Duplicate reference service</li>
+<li>Scan usage service</li>
+</ul>
+<hr>
+<h2>Verification Flow</h2>
+<p>The backend verification endpoint should follow this order:</p>
+<pre><code>Receive request from mobile app
+-&gt; Confirm user is authenticated
+-&gt; Validate request serializer
+-&gt; Check scan usage limit
+-&gt; Check duplicate receipt/reference
+-&gt; Select provider service
+-&gt; Call provider API or mock provider
+-&gt; Normalize provider response
+-&gt; Save VerificationTransaction
+-&gt; Increase ScanUsage
+-&gt; Return clean response to frontend</code></pre>
+<p>The mobile app should receive a clean response only. The raw provider response should be stored for backend/debugging but should not be casually exposed.</p>
+<hr>
+<h2>Provider Services</h2>
+<p>The provider service layer should make all providers look the same to the rest of our backend.</p>
+<p>Provider services can include:</p>
+<ul>
+<li>qbirr</li>
+<li>v.odit.et</li>
+<li>verify.et</li>
+<li>mock provider for development</li>
+</ul>
+<p>Every provider service should return:</p>
+<pre><code>{
+  &quot;status&quot;: &quot;verified&quot;,
+  &quot;amount&quot;: &quot;500.00&quot;,
+  &quot;currency&quot;: &quot;ETB&quot;,
+  &quot;sender_name&quot;: &quot;Customer Name&quot;,
+  &quot;receiver_name&quot;: &quot;Natnael Example&quot;,
+  &quot;provider&quot;: &quot;cbe&quot;,
+  &quot;transaction_date&quot;: &quot;2026-06-24T14:20:00Z&quot;,
+  &quot;reference&quot;: &quot;FT23001234ABC&quot;,
+  &quot;message&quot;: &quot;Payment verified successfully&quot;,
+  &quot;raw_response&quot;: {}
+}</code></pre>
+<p>If real provider API access is not ready, use a mock provider first so frontend and backend integration can continue.</p>
+<hr>
+<h2>Dashboard / Analytics</h2>
+<p>Dashboard data should be calculated from saved <code>VerificationTransaction</code> records.</p>
+<p>Dashboard API should calculate:</p>
+<ul>
+<li>Total verified amount</li>
+<li>Total scans</li>
+<li>Verified count</li>
+<li>Pending count</li>
+<li>Failed count</li>
+<li>Unknown count</li>
+<li>Breakdown by provider/bank</li>
+<li>Recent transactions</li>
+<li>Weekly summary</li>
+<li>Monthly summary</li>
+<li>Yearly summary</li>
+</ul>
+<p>Every dashboard query must filter by logged-in user.</p>
+<hr>
+<h2>Security Rules</h2>
+<ul>
+<li>Scanner API requires login.</li>
+<li>Dashboard API requires login.</li>
+<li>Profile API requires login.</li>
+<li>Users can only see their own data.</li>
+<li>Backend must validate all frontend input.</li>
+<li>Backend must not trust frontend status.</li>
+<li>External API keys must stay in backend environment variables.</li>
+<li>Duplicate receipt/reference must be handled.</li>
+<li>Raw provider response should not be shown unnecessarily.</li>
+</ul>
+<hr>
+<h2>Done When</h2>
+<p>This role is complete for V1 when:</p>
+<ul>
+<li>Register/login/profile APIs work.</li>
+<li>Verification endpoint works with real or mock provider.</li>
+<li>Verification result is saved to database.</li>
+<li>Scan usage increases after verification.</li>
+<li>Duplicate references are detected.</li>
+<li>Dashboard summary API returns correct user data.</li>
+<li>Transaction history API returns correct user data.</li>
+<li>Protected APIs reject unauthenticated requests.</li>
+<li>User data is isolated between users.</li>
+</ul></body></html>

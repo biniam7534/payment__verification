@@ -1,0 +1,177 @@
+<!doctype html><html><head><meta charset='utf-8'><title>Blue X V1 Role Document</title><style>
+@page { size: A4; margin: 18mm; }
+* { box-sizing: border-box; }
+body { margin: 0; color: #1f2933; background: #fff; font-family: Arial, Helvetica, sans-serif; font-size: 11.5pt; line-height: 1.55; }
+h1, h2, h3 { color: #111827; line-height: 1.25; }
+h1 { margin: 0 0 8px; font-size: 24pt; }
+h2 { margin: 26px 0 10px; padding-bottom: 5px; border-bottom: 1px solid #d9dee7; font-size: 15pt; }
+h3 { margin: 18px 0 8px; font-size: 12.5pt; }
+p { margin: 0 0 10px; }
+ul, ol { margin: 8px 0 12px 22px; padding: 0; }
+li { margin: 4px 0; }
+blockquote { margin: 14px 0; padding: 10px 14px; border-left: 4px solid #9ca3af; background: #f8fafc; }
+pre { margin: 10px 0 14px; padding: 12px; border: 1px solid #d9dee7; border-radius: 8px; background: #f8fafc; white-space: pre-wrap; word-break: break-word; font-size: 9.5pt; }
+code { font-family: Consolas, Monaco, monospace; font-size: 9.5pt; }
+p code, li code { background: #f1f5f9; border: 1px solid #e5e7eb; border-radius: 4px; padding: 1px 4px; }
+hr { border: 0; border-top: 1px solid #d9dee7; margin: 20px 0; }
+.title-block { padding: 18px; border: 1px solid #d9dee7; border-radius: 12px; background: #f7f9fc; margin-bottom: 22px; }
+</style></head><body><div class='title-block'><h1>Blue X V1 Role Document</h1></div>
+<h2>Mobile Frontend Developer</h2>
+<p>This document explains the mobile frontend responsibility for Version 1 of the Blue X payment verification app.</p>
+<p>The mobile app is responsible for screens, user input, API calls, loading states, and displaying backend responses. The mobile app must not decide whether a payment is real. That decision belongs to the backend.</p>
+<hr>
+<h2>Main Goal</h2>
+<p>Build the mobile app experience for three main pages:</p>
+<ul>
+<li>Profile</li>
+<li>Scanner</li>
+<li>Dashboard</li>
+</ul>
+<p>The app should be simple enough for a shop owner or staff member to use during a real sale.</p>
+<hr>
+<h2>General Frontend Rules</h2>
+<ul>
+<li>Do not call external payment provider APIs directly.</li>
+<li>Do not store external provider API keys in the mobile app.</li>
+<li>Do not decide payment status in the frontend.</li>
+<li>Always show loading state while waiting for backend.</li>
+<li>Always show backend errors clearly.</li>
+<li>Use the authentication token for protected API calls.</li>
+<li>Keep the UI simple and readable.</li>
+</ul>
+<hr>
+<h2>Authentication Screens</h2>
+<p>The mobile app should include:</p>
+<ul>
+<li>Register screen</li>
+<li>Login screen</li>
+<li>Logged-in app navigation</li>
+<li>Logout action</li>
+</ul>
+<p>Register should call:</p>
+<pre><code>POST /api/accounts/register/</code></pre>
+<p>Login should call:</p>
+<pre><code>POST /api/accounts/login/</code></pre>
+<p>After login/register:</p>
+<ul>
+<li>Store the returned token securely.</li>
+<li>Use the token for Profile, Scanner, and Dashboard APIs.</li>
+<li>If token is missing or invalid, send the user back to login.</li>
+</ul>
+<hr>
+<h2>Profile Page</h2>
+<p>The Profile page should show and update user/business information.</p>
+<p>The page should display:</p>
+<ul>
+<li>Full name</li>
+<li>Phone number</li>
+<li>Business name</li>
+<li>Business type</li>
+<li>Receiver name</li>
+<li>Receiver account/phone</li>
+<li>Default provider/bank</li>
+<li>Scan usage if backend returns it</li>
+</ul>
+<p>The page should allow:</p>
+<ul>
+<li>Editing business name</li>
+<li>Editing business type</li>
+<li>Editing receiver name</li>
+<li>Editing receiver account/phone</li>
+<li>Editing default provider/bank</li>
+<li>Logout</li>
+</ul>
+<p>APIs:</p>
+<pre><code>GET /api/accounts/profile/
+PUT /api/accounts/profile/
+POST /api/accounts/logout/</code></pre>
+<p>Expected profile update request:</p>
+<pre><code>{
+  &quot;business_name&quot;: &quot;Blue Shop&quot;,
+  &quot;business_type&quot;: &quot;Retail&quot;,
+  &quot;receiver_name&quot;: &quot;Natnael Example&quot;,
+  &quot;receiver_account&quot;: &quot;1000017692643&quot;,
+  &quot;default_provider&quot;: &quot;cbe&quot;
+}</code></pre>
+<hr>
+<h2>Scanner Page</h2>
+<p>The Scanner page is the main app action.</p>
+<p>For the first build, manual entry is required. QR scan can be added after manual entry works. OCR can come later.</p>
+<p>Scanner inputs:</p>
+<ul>
+<li>Provider/bank</li>
+<li>Receipt ID or transaction reference</li>
+<li>Receipt URL if QR scan is available</li>
+<li>Amount if available</li>
+<li>Sender name if available</li>
+<li>Sender phone if available</li>
+<li>Receiver name/account from profile or manual override</li>
+</ul>
+<p>API:</p>
+<pre><code>POST /api/verification/verify/</code></pre>
+<p>Request example:</p>
+<pre><code>{
+  &quot;provider&quot;: &quot;cbe&quot;,
+  &quot;bank_name&quot;: &quot;CBE&quot;,
+  &quot;receipt_id&quot;: &quot;FT23001234ABC&quot;,
+  &quot;transaction_reference&quot;: &quot;FT23001234ABC&quot;,
+  &quot;receipt_url&quot;: &quot;&quot;,
+  &quot;sender_name&quot;: &quot;Customer Name&quot;,
+  &quot;sender_phone&quot;: &quot;0911223344&quot;,
+  &quot;amount&quot;: &quot;500.00&quot;,
+  &quot;receiver_name&quot;: &quot;Natnael Example&quot;,
+  &quot;receiver_account&quot;: &quot;1000017692643&quot;
+}</code></pre>
+<p>The page must show:</p>
+<ul>
+<li>Loading state while request is running</li>
+<li>Success result card</li>
+<li>Pending result card</li>
+<li>Failed result card</li>
+<li>Unknown result card</li>
+<li>Clear error if backend rejects the request</li>
+</ul>
+<p>Result card should display:</p>
+<ul>
+<li>Status</li>
+<li>Amount</li>
+<li>Provider/bank</li>
+<li>Sender name</li>
+<li>Receipt/reference ID</li>
+<li>Backend message</li>
+<li>Verification date/time</li>
+</ul>
+<hr>
+<h2>Dashboard Page</h2>
+<p>The Dashboard page shows financial summary and payment history.</p>
+<p>APIs:</p>
+<pre><code>GET /api/verification/dashboard/summary/?period=week
+GET /api/verification/dashboard/summary/?period=month
+GET /api/verification/dashboard/summary/?period=year
+GET /api/verification/transactions/</code></pre>
+<p>Dashboard should show:</p>
+<ul>
+<li>Total verified amount</li>
+<li>Total scans</li>
+<li>Verified count</li>
+<li>Pending count</li>
+<li>Failed count</li>
+<li>Unknown count</li>
+<li>Provider/bank breakdown</li>
+<li>Recent transactions</li>
+<li>Week/month/year filter</li>
+</ul>
+<p>The dashboard should not be crowded. The first screen should show only the most important summary, then the user can scroll for details.</p>
+<hr>
+<h2>Done When</h2>
+<p>This role is complete for V1 when:</p>
+<ul>
+<li>User can register and login from mobile.</li>
+<li>Token is stored and used for protected requests.</li>
+<li>Profile page can load and update business profile.</li>
+<li>Scanner page can submit manual verification request.</li>
+<li>Scanner page shows loading and result card.</li>
+<li>Dashboard page loads summary and transaction history.</li>
+<li>Errors are displayed clearly.</li>
+<li>The app does not expose provider API keys or make provider calls directly.</li>
+</ul></body></html>

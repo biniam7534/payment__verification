@@ -208,4 +208,3 @@ This role is complete for V1 when:
 - Dashboard page loads summary and transaction history.
 - Errors are displayed clearly.
 - The app does not expose provider API keys or make provider calls directly.
-

@@ -1,0 +1,153 @@
+<!doctype html><html><head><meta charset='utf-8'><title>Blue X V1 Role Document</title><style>
+@page { size: A4; margin: 18mm; }
+* { box-sizing: border-box; }
+body { margin: 0; color: #1f2933; background: #fff; font-family: Arial, Helvetica, sans-serif; font-size: 11.5pt; line-height: 1.55; }
+h1, h2, h3 { color: #111827; line-height: 1.25; }
+h1 { margin: 0 0 8px; font-size: 24pt; }
+h2 { margin: 26px 0 10px; padding-bottom: 5px; border-bottom: 1px solid #d9dee7; font-size: 15pt; }
+h3 { margin: 18px 0 8px; font-size: 12.5pt; }
+p { margin: 0 0 10px; }
+ul, ol { margin: 8px 0 12px 22px; padding: 0; }
+li { margin: 4px 0; }
+blockquote { margin: 14px 0; padding: 10px 14px; border-left: 4px solid #9ca3af; background: #f8fafc; }
+pre { margin: 10px 0 14px; padding: 12px; border: 1px solid #d9dee7; border-radius: 8px; background: #f8fafc; white-space: pre-wrap; word-break: break-word; font-size: 9.5pt; }
+code { font-family: Consolas, Monaco, monospace; font-size: 9.5pt; }
+p code, li code { background: #f1f5f9; border: 1px solid #e5e7eb; border-radius: 4px; padding: 1px 4px; }
+hr { border: 0; border-top: 1px solid #d9dee7; margin: 20px 0; }
+.title-block { padding: 18px; border: 1px solid #d9dee7; border-radius: 12px; background: #f7f9fc; margin-bottom: 22px; }
+</style></head><body><div class='title-block'><h1>Blue X V1 Role Document</h1></div>
+<h2>QA And Testing</h2>
+<p>This document explains the QA and testing responsibility for Version 1 of the Blue X payment verification app.</p>
+<p>QA makes sure the app works as expected before we call the MVP complete. Testing should cover mobile screens, backend APIs, integration, security, and common failure cases.</p>
+<hr>
+<h2>Main Goal</h2>
+<p>Create and run tests that prove the app works from login to verification to dashboard.</p>
+<p>The main test flow is:</p>
+<pre><code>Create account
+-&gt; Login
+-&gt; Update business profile
+-&gt; Submit verification request
+-&gt; Backend saves result
+-&gt; Mobile shows result card
+-&gt; Dashboard shows saved transaction</code></pre>
+<hr>
+<h2>Account Tests</h2>
+<p>These tests must pass:</p>
+<ul>
+<li>User can register.</li>
+<li>User can login.</li>
+<li>Wrong password fails.</li>
+<li>Missing phone number fails.</li>
+<li>Missing password fails.</li>
+<li>Logged-out user cannot access profile.</li>
+<li>Logged-in user can load profile.</li>
+<li>Logged-in user can update business profile.</li>
+<li>User cannot access another user&#x27;s profile.</li>
+</ul>
+<hr>
+<h2>Scanner Tests</h2>
+<p>These tests must pass:</p>
+<ul>
+<li>User can submit manual receipt details.</li>
+<li>Missing receipt/reference shows clear error.</li>
+<li>Missing provider/bank shows clear error.</li>
+<li>Backend returns one allowed status.</li>
+<li>Loading state appears while waiting.</li>
+<li>Result card displays status.</li>
+<li>Result card displays amount if backend returns amount.</li>
+<li>Result card displays provider/bank.</li>
+<li>Failed verification shows clear message.</li>
+<li>Unknown verification shows clear message.</li>
+</ul>
+<p>Allowed statuses:</p>
+<ul>
+<li><code>verified</code></li>
+<li><code>pending</code></li>
+<li><code>failed</code></li>
+<li><code>unknown</code></li>
+</ul>
+<hr>
+<h2>Backend Verification Tests</h2>
+<p>These tests must pass:</p>
+<ul>
+<li>Verification endpoint requires login.</li>
+<li>Verification request serializer validates required fields.</li>
+<li>Mock provider returns normalized result.</li>
+<li>Provider result is saved in database.</li>
+<li>Saved transaction belongs to logged-in user.</li>
+<li>Duplicate receipt/reference is detected.</li>
+<li>Scan usage count increases after verification.</li>
+<li>Scan limit is enforced if enabled.</li>
+<li>Raw provider response is saved in backend.</li>
+<li>Invalid provider returns clear error.</li>
+</ul>
+<hr>
+<h2>Dashboard Tests</h2>
+<p>These tests must pass:</p>
+<ul>
+<li>Dashboard endpoint requires login.</li>
+<li>Dashboard shows only logged-in user&#x27;s data.</li>
+<li>Total verified amount is correct.</li>
+<li>Verified count is correct.</li>
+<li>Pending count is correct.</li>
+<li>Failed count is correct.</li>
+<li>Unknown count is correct.</li>
+<li>Provider/bank breakdown is correct.</li>
+<li>Recent transactions are ordered newest first.</li>
+<li>Week/month/year filter returns correct period.</li>
+</ul>
+<hr>
+<h2>API Integration Tests</h2>
+<p>These tests must pass:</p>
+<ul>
+<li>Mobile login receives token.</li>
+<li>Mobile sends token to protected APIs.</li>
+<li>Backend rejects missing token.</li>
+<li>Backend rejects invalid token.</li>
+<li>Mobile scanner request reaches backend.</li>
+<li>Backend response displays in mobile result card.</li>
+<li>Dashboard updates after a verification result is saved.</li>
+<li>Standard error response displays correctly in mobile app.</li>
+</ul>
+<hr>
+<h2>Security Tests</h2>
+<p>These tests must pass:</p>
+<ul>
+<li>User A cannot see User B transactions.</li>
+<li>User A cannot update User B profile.</li>
+<li>Provider API keys are not inside the mobile app.</li>
+<li>Raw provider response is not shown to normal users unless intentionally allowed.</li>
+<li>Backend does not trust frontend status.</li>
+<li>Backend validates amount format.</li>
+<li>Backend validates phone/reference fields.</li>
+</ul>
+<hr>
+<h2>Manual Test Script</h2>
+<p>Before demo, run this manual test:</p>
+<ol>
+<li>Create a new account.</li>
+<li>Login.</li>
+<li>Add business profile details.</li>
+<li>Open Scanner page.</li>
+<li>Submit a manual verification request.</li>
+<li>Confirm loading state appears.</li>
+<li>Confirm result card appears.</li>
+<li>Open Dashboard.</li>
+<li>Confirm the transaction appears in recent history.</li>
+<li>Confirm total amount and status count updated.</li>
+<li>Logout.</li>
+<li>Confirm protected pages are not accessible.</li>
+</ol>
+<hr>
+<h2>Done When</h2>
+<p>This role is complete for V1 when:</p>
+<ul>
+<li>All account tests pass.</li>
+<li>All scanner tests pass.</li>
+<li>All backend verification tests pass.</li>
+<li>All dashboard tests pass.</li>
+<li>All integration tests pass.</li>
+<li>Main manual test script passes.</li>
+<li>Bugs are written clearly with steps to reproduce.</li>
+<li>No critical security issue is left unresolved.</li>
+</ul></body></html>
