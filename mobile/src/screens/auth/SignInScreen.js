@@ -26,7 +26,10 @@ export default function SignInScreen({ navigation }) {
     }
     try {
       // TODO: replace mocked signIn() with real backend auth call.
-      await signIn(phoneNumber, password);
+      const result = await signIn(phoneNumber, password);
+      if (result?.user) {
+        navigation.getParent()?.reset({ index: 0, routes: [{ name: "App" }] });
+      }
     } catch (e) {
       setError("Sign in failed. Please try again.");
     }

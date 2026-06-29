@@ -8,7 +8,7 @@ import { useI18n } from "../../i18n/I18nContext";
 import { useAuth } from "../../store/AuthContext";
 import { typography, spacing, radius } from "../../theme";
 
-export default function AccountCreatedScreen() {
+export default function AccountCreatedScreen({ navigation }) {
   const { colors } = useAppTheme();
   const { t } = useI18n();
   const { signIn, registerDraft } = useAuth();
@@ -18,7 +18,10 @@ export default function AccountCreatedScreen() {
     setLoading(true);
     try {
       // TODO: once the backend issues a session token at sign-up, store it instead of re-signing in here.
-      await signIn(registerDraft.phoneNumber, "");
+      const result = await signIn(registerDraft.phoneNumber, "");
+      if (result?.user) {
+        navigation.getParent()?.reset({ index: 0, routes: [{ name: "App" }] });
+      }
     } finally {
       setLoading(false);
     }
