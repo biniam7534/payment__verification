@@ -1,0 +1,20 @@
+{
+  "expo": {
+    "name": "Blue X Mobile",
+    "slug": "blue-x-mobile",
+    "sdkVersion": "54.0.0",
+    "platforms": ["ios", "android", "web"],
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "package": "com.bluex.mobile"
+    }
+  }
+}
