@@ -28,7 +28,7 @@ export default function AppInput({
         style={[
           styles.inputWrapper,
           {
-            backgroundColor: colors.surface,
+            backgroundColor: colors.input || colors.surface,
             borderColor: error ? colors.danger : colors.border,
           },
         ]}

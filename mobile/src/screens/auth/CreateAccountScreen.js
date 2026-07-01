@@ -26,11 +26,11 @@ export default function CreateAccountScreen({ navigation }) {
   const handleNext = async () => {
     setError("");
     if (!fullName || !phoneNumber || !password) {
-      setError("Please fill in all fields");
+      setError(t("fillAllFields"));
       return;
     }
     if (password !== confirmPassword) {
-      setError("Passwords do not match");
+      setError(t("passwordsMismatch"));
       return;
     }
     setLoading(true);

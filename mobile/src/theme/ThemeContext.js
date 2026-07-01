@@ -1,35 +1,53 @@
-import React, { createContext, useContext, useState, useMemo } from "react";
-import { colors as baseColors } from "../theme/colors";
+import React, { createContext, useContext, useState, useMemo, useEffect, useCallback } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getThemeColors } from "./colors";
+import { getShadows } from "./shadows";
 
-const darkOverrides = {
-  background: baseColors.darkBg,
-  surface: baseColors.darkSurface,
-  ink: "#F1F5F9",
-  border: "#27324A",
-  gray: "#8A93A6",
-};
+const DARK_MODE_STORAGE_KEY = "bunnapay.darkMode";
 
 const ThemeContext = createContext({
   isDark: false,
+  isReady: false,
   toggleDark: () => {},
-  colors: baseColors,
+  setDarkMode: () => {},
+  colors: getThemeColors(false),
+  shadows: getShadows(false),
 });
 
 export function ThemeProvider({ children }) {
   const [isDark, setIsDark] = useState(false);
+  const [isReady, setIsReady] = useState(false);
 
-  const colors = useMemo(
-    () => (isDark ? { ...baseColors, ...darkOverrides } : baseColors),
-    [isDark]
+  useEffect(() => {
+    AsyncStorage.getItem(DARK_MODE_STORAGE_KEY)
+      .then((stored) => {
+        if (stored === "true") setIsDark(true);
+      })
+      .finally(() => setIsReady(true));
+  }, []);
+
+  const setDarkMode = useCallback((value) => {
+    setIsDark(value);
+    AsyncStorage.setItem(DARK_MODE_STORAGE_KEY, value ? "true" : "false").catch(() => {});
+  }, []);
+
+  const toggleDark = useCallback(() => {
+    setIsDark((prev) => {
+      const next = !prev;
+      AsyncStorage.setItem(DARK_MODE_STORAGE_KEY, next ? "true" : "false").catch(() => {});
+      return next;
+    });
+  }, []);
+
+  const colors = useMemo(() => getThemeColors(isDark), [isDark]);
+  const shadows = useMemo(() => getShadows(isDark), [isDark]);
+
+  const value = useMemo(
+    () => ({ isDark, isReady, toggleDark, setDarkMode, colors, shadows }),
+    [isDark, isReady, toggleDark, setDarkMode, colors, shadows]
   );
 
-  const toggleDark = () => setIsDark((d) => !d);
-
-  return (
-    <ThemeContext.Provider value={{ isDark, toggleDark, colors }}>
-      {children}
-    </ThemeContext.Provider>
-  );
+  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 }
 
 export const useAppTheme = () => useContext(ThemeContext);

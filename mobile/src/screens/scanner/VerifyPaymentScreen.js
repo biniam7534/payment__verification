@@ -1,44 +1,67 @@
 import React, { useState } from "react";
-import { View, Text, Image, Pressable } from "react-native";
+import { View, Text, Image, Pressable, ScrollView } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import ScreenContainer from "../../components/common/ScreenContainer";
 import ScreenHeader from "../../components/common/ScreenHeader";
 import AppButton from "../../components/common/AppButton";
 import { useAppTheme } from "../../theme/ThemeContext";
 import { useI18n } from "../../i18n/I18nContext";
 import * as paymentsApi from "../../services/api/paymentsApi";
+import { navigateToAppScreen } from "../../navigation/navigateTo";
+import { formatCurrency } from "../../utils/format";
 import { typography, spacing, radius } from "../../theme";
 
-function DetailRow({ label, value, colors }) {
+function DetailRow({ label, value, colors, last, highlight }) {
   return (
     <View
       style={{
         flexDirection: "row",
         justifyContent: "space-between",
-        paddingVertical: spacing.sm,
-        borderBottomWidth: 1,
+        alignItems: "center",
+        paddingVertical: spacing.md,
+        borderBottomWidth: last ? 0 : 1,
         borderBottomColor: colors.border,
       }}
     >
       <Text style={[typography.body, { color: colors.gray }]}>{label}</Text>
-      <Text style={[typography.bodyMedium, { color: colors.ink }]}>{value}</Text>
+      <Text
+        style={[
+          highlight ? typography.h3 : typography.bodyMedium,
+          { color: highlight ? colors.primaryDark : colors.ink },
+        ]}
+      >
+        {value}
+      </Text>
     </View>
   );
 }
 
 export default function VerifyPaymentScreen({ navigation, route }) {
-  const { colors } = useAppTheme();
+  const { colors, shadows } = useAppTheme();
   const { t } = useI18n();
   const details = route?.params?.details || {};
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleVerify = async () => {
     setLoading(true);
+    setError("");
     try {
-      // TODO: connect confirmPayment() to the real backend confirmation endpoint.
       await paymentsApi.confirmPayment(details.id);
-      navigation.navigate("PaymentVerified", { details });
+      navigateToAppScreen(navigation, "PaymentVerified", { details });
+    } catch (e) {
+      setError(t("verifyFailed"));
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleReport = async () => {
+    try {
+      await paymentsApi.reportPaymentIssue(details.id, "user_reported");
+      navigation.goBack();
+    } catch (e) {
+      setError(t("verifyFailed"));
     }
   };
 
@@ -46,43 +69,66 @@ export default function VerifyPaymentScreen({ navigation, route }) {
     <ScreenContainer>
       <ScreenHeader title={t("verifyPayment")} />
 
-      <View
-        style={{
-          backgroundColor: colors.surface,
-          borderRadius: radius.lg,
-          padding: spacing.md,
-          marginTop: spacing.md,
-        }}
-      >
-        <DetailRow label={t("from")} value={details.from || "—"} colors={colors} />
-        <DetailRow label={t("reference")} value={details.reference || "—"} colors={colors} />
-        <DetailRow
-          label={t("amount")}
-          value={`${details.currency || "ETB"} ${(details.amount ?? 0).toFixed(2)}`}
-          colors={colors}
-        />
-      </View>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ flexGrow: 1 }}>
+        <Text style={[typography.body, { color: colors.gray, marginBottom: spacing.md }]}>
+          {t("reviewPaymentDetails")}
+        </Text>
 
-      {details.screenshotUri ? (
-        <View style={{ marginTop: spacing.md }}>
-          <Text style={[typography.bodyMedium, { color: colors.ink, marginBottom: spacing.sm }]}>
-            {t("screenshot")}
-          </Text>
-          <Image
-            source={{ uri: details.screenshotUri }}
-            style={{ width: "100%", height: 200, borderRadius: radius.lg }}
-            resizeMode="cover"
+        <View style={[shadows.card, { backgroundColor: colors.surface, borderRadius: radius.lg, paddingHorizontal: spacing.md }]}>
+          <DetailRow label={t("from")} value={details.from || "—"} colors={colors} />
+          <DetailRow label={t("reference")} value={details.reference || "—"} colors={colors} />
+          <DetailRow
+            label={t("amount")}
+            value={formatCurrency(details.amount, details.currency || "ETB")}
+            colors={colors}
+            highlight
+            last
           />
         </View>
-      ) : null}
 
-      <View style={{ flex: 1 }} />
+        {details.screenshotUri ? (
+          <View style={{ marginTop: spacing.lg }}>
+            <Text style={[typography.bodyMedium, { color: colors.ink, marginBottom: spacing.sm }]}>
+              {t("screenshot")}
+            </Text>
+            <View style={[shadows.card, { borderRadius: radius.lg, overflow: "hidden" }]}>
+              <Image
+                source={{ uri: details.screenshotUri }}
+                style={{ width: "100%", height: 220 }}
+                resizeMode="cover"
+              />
+            </View>
+          </View>
+        ) : null}
 
-      <AppButton title={t("verifyPayment")} onPress={handleVerify} loading={loading} />
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            backgroundColor: colors.success + "15",
+            borderRadius: radius.md,
+            padding: spacing.md,
+            marginTop: spacing.lg,
+          }}
+        >
+          <Ionicons name="shield-checkmark-outline" size={20} color={colors.success} />
+          <Text style={[typography.caption, { color: colors.ink, marginLeft: spacing.sm, flex: 1 }]}>
+            {t("verifyPaymentHint")}
+          </Text>
+        </View>
 
-      <Pressable style={{ alignSelf: "center", marginTop: spacing.md }}>
-        <Text style={[typography.caption, { color: colors.danger }]}>{t("somethingWrong")}</Text>
-      </Pressable>
+        {error ? (
+          <Text style={[typography.caption, { color: colors.danger, marginTop: spacing.md }]}>{error}</Text>
+        ) : null}
+
+        <View style={{ flex: 1, minHeight: spacing.xl }} />
+
+        <AppButton title={t("verifyPayment")} onPress={handleVerify} loading={loading} style={shadows.button} />
+
+        <Pressable onPress={handleReport} style={{ alignSelf: "center", marginTop: spacing.md, marginBottom: spacing.md }}>
+          <Text style={[typography.caption, { color: colors.danger }]}>{t("somethingWrong")}</Text>
+        </Pressable>
+      </ScrollView>
     </ScreenContainer>
   );
 }

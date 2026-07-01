@@ -7,26 +7,33 @@ import ScreenContainer from "../../components/common/ScreenContainer";
 import AppButton from "../../components/common/AppButton";
 import { useAppTheme } from "../../theme/ThemeContext";
 import { useI18n } from "../../i18n/I18nContext";
+import { navigateToAppScreen } from "../../navigation/navigateTo";
 import { typography, spacing, radius } from "../../theme";
 
 export default function ScanQRScreen({ navigation }) {
-  const { colors } = useAppTheme();
+  const { colors, shadows } = useAppTheme();
   const { t } = useI18n();
   const [permission, requestPermission] = useCameraPermissions();
+  const [scanned, setScanned] = useState(false);
 
   useEffect(() => {
     if (!permission) requestPermission();
   }, [permission]);
 
+  const goToUpload = (params = {}) => {
+    navigateToAppScreen(navigation, "AddPaymentScreenshot", params);
+  };
+
   const handleBarcodeScanned = ({ data }) => {
-    // TODO: send scanned QR payload to backend for merchant/payment lookup.
-    navigation.navigate("AddPaymentScreenshot", { qrPayload: data });
+    if (scanned) return;
+    setScanned(true);
+    goToUpload({ qrPayload: data });
   };
 
   const handleUploadFromGallery = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({ mediaTypes: ImagePicker.MediaTypeOptions.Images });
     if (!result.canceled) {
-      navigation.navigate("AddPaymentScreenshot", { imageUri: result.assets[0].uri });
+      goToUpload({ imageUri: result.assets[0].uri });
     }
   };
 
@@ -65,6 +72,11 @@ export default function ScanQRScreen({ navigation }) {
         </View>
 
         <View style={{ position: "absolute", bottom: spacing.xl, left: spacing.lg, right: spacing.lg }}>
+          <AppButton
+            title={t("addPaymentScreenshot")}
+            onPress={() => goToUpload()}
+            style={{ marginBottom: spacing.md, ...shadows.button }}
+          />
           <AppButton
             title={t("uploadFromGallery")}
             variant="outline"

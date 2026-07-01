@@ -9,7 +9,7 @@ import { useAuth } from "../../store/AuthContext";
 import { typography, spacing, radius } from "../../theme";
 
 export default function AccountCreatedScreen({ navigation }) {
-  const { colors } = useAppTheme();
+  const { colors, shadows } = useAppTheme();
   const { t } = useI18n();
   const { signIn, registerDraft } = useAuth();
   const [loading, setLoading] = useState(false);
@@ -18,10 +18,7 @@ export default function AccountCreatedScreen({ navigation }) {
     setLoading(true);
     try {
       // TODO: once the backend issues a session token at sign-up, store it instead of re-signing in here.
-      const result = await signIn(registerDraft.phoneNumber, "");
-      if (result?.user) {
-        navigation.getParent()?.reset({ index: 0, routes: [{ name: "App" }] });
-      }
+      await signIn(registerDraft.phoneNumber, "");
     } finally {
       setLoading(false);
     }
@@ -31,8 +28,8 @@ export default function AccountCreatedScreen({ navigation }) {
     <ScreenContainer style={{ justifyContent: "center", alignItems: "center" }}>
       <View
         style={{
-          width: 96,
-          height: 96,
+          width: 110,
+          height: 110,
           borderRadius: radius.pill,
           backgroundColor: colors.primaryLight + "33",
           alignItems: "center",
@@ -40,7 +37,7 @@ export default function AccountCreatedScreen({ navigation }) {
           marginBottom: spacing.lg,
         }}
       >
-        <Ionicons name="checkmark-circle" size={72} color={colors.primaryDark} />
+        <Ionicons name="checkmark-circle" size={84} color={colors.primaryDark} />
       </View>
       <Text style={[typography.h2, { color: colors.ink, textAlign: "center" }]}>{t("accountCreated")}</Text>
       <Text
@@ -48,7 +45,7 @@ export default function AccountCreatedScreen({ navigation }) {
       >
         {t("accountReady")}
       </Text>
-      <AppButton title={t("goToDashboard")} onPress={handleGoToDashboard} loading={loading} />
+      <AppButton title={t("goToDashboard")} onPress={handleGoToDashboard} loading={loading} style={shadows.button} />
     </ScreenContainer>
   );
 }

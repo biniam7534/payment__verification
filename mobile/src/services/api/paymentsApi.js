@@ -18,8 +18,8 @@ export async function getTransactions({ query, status } = {}) {
 }
 
 // TODO: connect to POST /payments/verify with a multipart screenshot upload.
-export async function submitPaymentScreenshot({ imageUri }) {
-  await request("/payments/verify", { method: "POST", body: { imageUri } });
+export async function submitPaymentScreenshot({ imageUri, qrPayload }) {
+  await request("/payments/verify", { method: "POST", body: { imageUri, qrPayload } });
   // Mocked extracted payment details for the "Verify Payment" review screen.
   return {
     id: "tx_mock_1",

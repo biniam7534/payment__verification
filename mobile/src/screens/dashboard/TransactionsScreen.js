@@ -36,7 +36,9 @@ export default function TransactionsScreen() {
         style={{
           flexDirection: "row",
           alignItems: "center",
-          backgroundColor: colors.surface,
+          backgroundColor: colors.input || colors.surface,
+          borderWidth: 1,
+          borderColor: colors.border,
           borderRadius: radius.md,
           paddingHorizontal: spacing.md,
           height: 48,
@@ -83,7 +85,7 @@ export default function TransactionsScreen() {
         renderItem={({ item }) => <TransactionRow transaction={item} onPress={() => {}} />}
         ListEmptyComponent={
           <Text style={[typography.body, { color: colors.gray, textAlign: "center", marginTop: spacing.xl }]}>
-            No transactions found.
+            {t("noTransactions")}
           </Text>
         }
       />
