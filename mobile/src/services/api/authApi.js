@@ -3,10 +3,12 @@ import request from "./client";
 // TODO: connect to POST /auth/sign-in on the BunnaPay backend.
 export async function signIn({ phoneNumber, password }) {
   await request("/auth/sign-in", { method: "POST", body: { phoneNumber, password } });
-  // Mocked successful sign-in for frontend development.
+  // Mocked successful sign-in — returns the phone number as a stand-in name
+  // until the real backend supplies the user's profile.
+  // The actual name is injected by AuthContext from registerDraft when available.
   return {
     token: "mock-token",
-    user: { id: "u1", name: "Abel Tesfaye", phoneNumber, verified: true },
+    user: { id: "u1", name: null, phoneNumber, verified: true },
   };
 }
 

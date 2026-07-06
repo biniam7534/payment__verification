@@ -1,6 +1,7 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import MainTabs from "./MainTabs";
+import TransactionsScreen from "../screens/dashboard/TransactionsScreen";
 import AddPaymentScreenshotScreen from "../screens/scanner/AddPaymentScreenshotScreen";
 import VerifyPaymentScreen from "../screens/scanner/VerifyPaymentScreen";
 import PaymentVerifiedScreen from "../screens/scanner/PaymentVerifiedScreen";
@@ -13,6 +14,7 @@ export default function AppStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="MainTabs" component={MainTabs} />
+      <Stack.Screen name="Transactions" component={TransactionsScreen} />
       <Stack.Screen
         name="AddPaymentScreenshot"
         component={AddPaymentScreenshotScreen}

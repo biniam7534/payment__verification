@@ -9,7 +9,8 @@ import { useAppTheme } from "../../theme/ThemeContext";
 import { useI18n } from "../../i18n/I18nContext";
 import { useAuth } from "../../store/AuthContext";
 import * as authApi from "../../services/api/authApi";
-import { typography, spacing } from "../../theme";
+import { typography } from "../../theme";
+import { rs } from "../../theme/responsive";
 
 export default function CreateAccountScreen({ navigation }) {
   const { colors } = useAppTheme();
@@ -35,9 +36,9 @@ export default function CreateAccountScreen({ navigation }) {
     }
     setLoading(true);
     try {
-      // TODO: real backend call happens at final submit; this just registers the draft + sends OTP.
       await authApi.signUp({ fullName, phoneNumber, password });
-      setRegisterDraft({ fullName, phoneNumber });
+      // Store all three fields so AccountCreatedScreen can sign in automatically
+      setRegisterDraft({ fullName, phoneNumber, password });
       navigation.navigate("VerifyIdentity", { phoneNumber });
     } finally {
       setLoading(false);
@@ -49,13 +50,13 @@ export default function CreateAccountScreen({ navigation }) {
       <ScreenHeader title="" />
       <ScrollView keyboardShouldPersistTaps="handled">
         <Text style={[typography.h2, { color: colors.ink }]}>{t("createAccount")}</Text>
-        <Text style={[typography.body, { color: colors.gray, marginTop: spacing.xs, marginBottom: spacing.lg }]}>
+        <Text style={[typography.body, { color: colors.gray, marginTop: rs.xs, marginBottom: rs.lg }]}>
           {t("letsGetStartedAccount")}
         </Text>
 
         <StepIndicator currentStep={1} totalSteps={2} />
 
-        <View style={{ marginTop: spacing.lg }}>
+        <View style={{ marginTop: rs.lg }}>
           <AppInput label={t("fullName")} value={fullName} onChangeText={setFullName} placeholder="Your full name" />
           <AppInput
             label={t("phoneNumber")}
@@ -75,11 +76,11 @@ export default function CreateAccountScreen({ navigation }) {
           />
         </View>
 
-        <View style={{ marginTop: spacing.md }}>
+        <View style={{ marginTop: rs.md }}>
           <AppButton title={t("next")} onPress={handleNext} loading={loading} />
         </View>
 
-        <View style={{ flexDirection: "row", justifyContent: "center", marginTop: spacing.lg }}>
+        <View style={{ flexDirection: "row", justifyContent: "center", marginTop: rs.lg }}>
           <Text style={[typography.body, { color: colors.gray }]}>{t("alreadyHaveAccount")} </Text>
           <Text
             style={[typography.bodyMedium, { color: colors.primaryDark }]}

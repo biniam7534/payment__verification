@@ -1,5 +1,9 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { View } from "react-native";
+import "react-native-gesture-handler";
+import { enableScreens } from "react-native-screens";
+enableScreens();
+import React, { useEffect } from "react";
+import { View, ActivityIndicator } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import * as SplashScreen from "expo-splash-screen";
 import {
   useFonts,
@@ -17,36 +21,38 @@ import RootNavigator from "./src/navigation/RootNavigator";
 SplashScreen.preventAutoHideAsync().catch(() => {});
 
 export default function App() {
-  const [fontsLoaded] = useFonts({
+  const [fontsLoaded, fontError] = useFonts({
     Poppins_400Regular,
     Poppins_500Medium,
     Poppins_600SemiBold,
     Poppins_700Bold,
   });
 
-  const onLayoutRootView = useCallback(async () => {
-    if (fontsLoaded) {
-      await SplashScreen.hideAsync();
-    }
-  }, [fontsLoaded]);
-
   useEffect(() => {
-    onLayoutRootView();
-  }, [onLayoutRootView]);
+    if (fontsLoaded || fontError) {
+      SplashScreen.hideAsync().catch(() => {});
+    }
+  }, [fontsLoaded, fontError]);
 
-  if (!fontsLoaded) {
-    return null;
+  if (!fontsLoaded && !fontError) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="large" color="#16A34A" />
+      </View>
+    );
   }
 
   return (
-    <SafeAreaProvider onLayout={onLayoutRootView}>
-      <ThemeProvider>
-        <I18nProvider>
-          <AuthProvider>
-            <RootNavigator />
-          </AuthProvider>
-        </I18nProvider>
-      </ThemeProvider>
-    </SafeAreaProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <ThemeProvider>
+          <I18nProvider>
+            <AuthProvider>
+              <RootNavigator />
+            </AuthProvider>
+          </I18nProvider>
+        </ThemeProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
   );
 }

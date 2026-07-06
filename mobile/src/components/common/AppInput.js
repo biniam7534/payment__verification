@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { View, Text, TextInput, StyleSheet, Pressable } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useAppTheme } from "../../theme/ThemeContext";
-import { typography, spacing, radius } from "../../theme";
+import { typography } from "../../theme";
+import { INPUT_HEIGHT, rr, rs, iconSize } from "../../theme/responsive";
 
 export default function AppInput({
   label,
@@ -18,9 +19,9 @@ export default function AppInput({
   const [hidden, setHidden] = useState(secureTextEntry);
 
   return (
-    <View style={{ marginBottom: spacing.md }}>
+    <View style={{ marginBottom: rs.md }}>
       {label ? (
-        <Text style={[typography.bodyMedium, { color: colors.ink, marginBottom: spacing.xs }]}>
+        <Text style={[typography.bodyMedium, { color: colors.ink, marginBottom: rs.xs }]}>
           {label}
         </Text>
       ) : null}
@@ -45,12 +46,12 @@ export default function AppInput({
         />
         {secureTextEntry ? (
           <Pressable onPress={() => setHidden((h) => !h)} hitSlop={10}>
-            <Ionicons name={hidden ? "eye-off-outline" : "eye-outline"} size={20} color={colors.gray} />
+            <Ionicons name={hidden ? "eye-off-outline" : "eye-outline"} size={iconSize.sm} color={colors.gray} />
           </Pressable>
         ) : null}
       </View>
       {error ? (
-        <Text style={[typography.caption, { color: colors.danger, marginTop: spacing.xs }]}>
+        <Text style={[typography.caption, { color: colors.danger, marginTop: rs.xs }]}>
           {error}
         </Text>
       ) : null}
@@ -63,8 +64,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     borderWidth: 1,
-    borderRadius: radius.md,
-    paddingHorizontal: spacing.md,
-    height: 52,
+    borderRadius: rr.md,
+    paddingHorizontal: rs.md,
+    height: INPUT_HEIGHT,
   },
 });

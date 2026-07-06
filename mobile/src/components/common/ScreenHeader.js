@@ -3,7 +3,8 @@ import { View, Text, Pressable, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { useAppTheme } from "../../theme/ThemeContext";
-import { typography, spacing } from "../../theme";
+import { typography } from "../../theme";
+import { rs, iconSize, scale } from "../../theme/responsive";
 
 export default function ScreenHeader({ title, onBack, rightAction }) {
   const navigation = useNavigation();
@@ -12,7 +13,7 @@ export default function ScreenHeader({ title, onBack, rightAction }) {
   return (
     <View style={styles.row}>
       <Pressable onPress={onBack || navigation.goBack} hitSlop={10} style={styles.iconBtn}>
-        <Ionicons name="chevron-back" size={24} color={colors.ink} />
+        <Ionicons name="chevron-back" size={iconSize.md} color={colors.ink} />
       </Pressable>
       <Text style={[typography.h3, { color: colors.ink, flex: 1, textAlign: "center" }]}>
         {title}
@@ -26,7 +27,7 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: "row",
     alignItems: "center",
-    paddingVertical: spacing.md,
+    paddingVertical: rs.md,
   },
-  iconBtn: { width: 32, alignItems: "center" },
+  iconBtn: { width: scale(32, 0.4), alignItems: "center" },
 });

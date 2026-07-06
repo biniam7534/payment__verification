@@ -7,7 +7,8 @@ import StepIndicator from "../../components/common/StepIndicator";
 import { useAppTheme } from "../../theme/ThemeContext";
 import { useI18n } from "../../i18n/I18nContext";
 import * as authApi from "../../services/api/authApi";
-import { typography, spacing, radius } from "../../theme";
+import { typography } from "../../theme";
+import { rs, rr, scale, moderateScale, INPUT_HEIGHT } from "../../theme/responsive";
 
 const CODE_LENGTH = 6;
 const RESEND_SECONDS = 45;
@@ -38,7 +39,6 @@ export default function VerifyIdentityScreen({ navigation, route }) {
   const handleVerify = async () => {
     setLoading(true);
     try {
-      // TODO: connect to real OTP verification endpoint.
       await authApi.verifyOtp({ phoneNumber, code: code.join("") });
       navigation.navigate("AccountCreated");
     } finally {
@@ -52,22 +52,23 @@ export default function VerifyIdentityScreen({ navigation, route }) {
   };
 
   const formattedTime = `00:${String(secondsLeft).padStart(2, "0")}`;
+  const otpBoxSize = scale(44, 0.4);
 
   return (
     <ScreenContainer>
       <ScreenHeader title="" />
       <Text style={[typography.h2, { color: colors.ink }]}>{t("verifyYourIdentity")}</Text>
-      <Text style={[typography.body, { color: colors.gray, marginTop: spacing.xs, marginBottom: spacing.lg }]}>
+      <Text style={[typography.body, { color: colors.gray, marginTop: rs.xs, marginBottom: rs.lg }]}>
         {t("letsVerifyIts")}
       </Text>
 
       <StepIndicator currentStep={2} totalSteps={2} />
 
-      <Text style={[typography.body, { color: colors.ink, marginTop: spacing.lg }]}>
+      <Text style={[typography.body, { color: colors.ink, marginTop: rs.lg }]}>
         {t("enterCode")} {phoneNumber}
       </Text>
 
-      <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: spacing.lg }}>
+      <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: rs.lg }}>
         {code.map((digit, i) => (
           <TextInput
             key={i}
@@ -77,14 +78,14 @@ export default function VerifyIdentityScreen({ navigation, route }) {
             keyboardType="number-pad"
             maxLength={1}
             style={{
-              width: 44,
-              height: 52,
-              borderRadius: radius.md,
+              width: otpBoxSize,
+              height: INPUT_HEIGHT,
+              borderRadius: rr.md,
               borderWidth: 1.5,
               borderColor: digit ? colors.primaryDark : colors.border,
               backgroundColor: colors.surface,
               textAlign: "center",
-              fontSize: 20,
+              fontSize: moderateScale(20),
               color: colors.ink,
             }}
           />
@@ -93,18 +94,18 @@ export default function VerifyIdentityScreen({ navigation, route }) {
 
       <Pressable
         onPress={secondsLeft === 0 ? handleResend : undefined}
-        style={{ alignSelf: "center", marginTop: spacing.lg }}
+        style={{ alignSelf: "center", marginTop: rs.lg }}
       >
         <Text style={[typography.caption, { color: colors.gray }]}>
           {t("resendCode")} {secondsLeft > 0 ? formattedTime : ""}
         </Text>
       </Pressable>
 
-      <View style={{ marginTop: spacing.xl }}>
+      <View style={{ marginTop: rs.xl }}>
         <AppButton title={t("verify")} onPress={handleVerify} loading={loading} />
       </View>
 
-      <Pressable onPress={() => navigation.goBack()} style={{ alignSelf: "center", marginTop: spacing.md }}>
+      <Pressable onPress={() => navigation.goBack()} style={{ alignSelf: "center", marginTop: rs.md }}>
         <Text style={[typography.caption, { color: colors.primaryDark }]}>{t("changePhoneNumber")}</Text>
       </Pressable>
     </ScreenContainer>

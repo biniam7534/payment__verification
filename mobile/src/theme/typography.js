@@ -1,6 +1,12 @@
-// Typography scale. The design reference uses "Poppins".
-// Add Poppins via expo-font + @expo-google-fonts/poppins for production;
-// falls back to system font if not loaded (see App.js loadFonts()).
+/**
+ * Blue-X Typography System — Responsive
+ *
+ * All font sizes use `rf` (responsive font) from the responsive utility,
+ * so they scale fluidly across Samsung A14 → iPhone 15 Pro Max → Tablets
+ * without any manual per-device overrides.
+ */
+import { rf, rs } from "./responsive";
+
 export const fontFamily = {
   regular: "Poppins_400Regular",
   medium: "Poppins_500Medium",
@@ -9,30 +15,79 @@ export const fontFamily = {
 };
 
 export const typography = {
-  h1: { fontFamily: fontFamily.bold, fontSize: 28, lineHeight: 36 },
-  h2: { fontFamily: fontFamily.semiBold, fontSize: 22, lineHeight: 30 },
-  h3: { fontFamily: fontFamily.semiBold, fontSize: 18, lineHeight: 26 },
-  body: { fontFamily: fontFamily.regular, fontSize: 15, lineHeight: 22 },
-  bodyMedium: { fontFamily: fontFamily.medium, fontSize: 15, lineHeight: 22 },
-  caption: { fontFamily: fontFamily.regular, fontSize: 13, lineHeight: 18 },
-  button: { fontFamily: fontFamily.semiBold, fontSize: 16, lineHeight: 22 },
+  /** Page-level display (splash / hero numbers) */
+  display: {
+    fontFamily: fontFamily.bold,
+    fontSize: rf.display,
+    lineHeight: rf.display * 1.2,
+  },
+  /** Screen titles */
+  h1: {
+    fontFamily: fontFamily.bold,
+    fontSize: rf.h1,
+    lineHeight: rf.h1 * 1.3,
+  },
+  /** Section headings */
+  h2: {
+    fontFamily: fontFamily.semiBold,
+    fontSize: rf.h2,
+    lineHeight: rf.h2 * 1.35,
+  },
+  /** Card / sub-section headings */
+  h3: {
+    fontFamily: fontFamily.semiBold,
+    fontSize: rf.h3,
+    lineHeight: rf.h3 * 1.4,
+  },
+  /** List item titles */
+  h4: {
+    fontFamily: fontFamily.medium,
+    fontSize: rf.h4,
+    lineHeight: rf.h4 * 1.4,
+  },
+  /** Body / paragraph text */
+  body: {
+    fontFamily: fontFamily.regular,
+    fontSize: rf.body2,
+    lineHeight: rf.body2 * 1.55,
+  },
+  /** Emphasised body */
+  bodyMedium: {
+    fontFamily: fontFamily.medium,
+    fontSize: rf.body2,
+    lineHeight: rf.body2 * 1.55,
+  },
+  /** Secondary info */
+  caption: {
+    fontFamily: fontFamily.regular,
+    fontSize: rf.caption,
+    lineHeight: rf.caption * 1.5,
+  },
+  /** Small labels */
+  tiny: {
+    fontFamily: fontFamily.regular,
+    fontSize: rf.tiny,
+    lineHeight: rf.tiny * 1.4,
+  },
+  /** CTA buttons */
+  button: {
+    fontFamily: fontFamily.semiBold,
+    fontSize: rf.h4,
+    lineHeight: rf.h4 * 1.3,
+  },
 };
 
+// ─── Spacing (re-exported for backward compat) ─────────────────────────────
 export const spacing = {
-  xs: 4,
-  sm: 8,
-  md: 16,
-  lg: 24,
-  xl: 32,
-  xxl: 48,
+  xs: rs.xs,
+  sm: rs.sm,
+  md: rs.md,
+  lg: rs.lg,
+  xl: rs.xl,
+  xxl: rs.xxl,
 };
 
-export const radius = {
-  sm: 8,
-  md: 12,
-  lg: 16,
-  xl: 24,
-  pill: 999,
-};
+// ─── Radius (re-exported for backward compat) ──────────────────────────────
+export { rr as radius } from "./responsive";
 
 export default typography;

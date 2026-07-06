@@ -1,7 +1,8 @@
 import React from "react";
 import { Pressable, Text, StyleSheet, ActivityIndicator } from "react-native";
 import { useAppTheme } from "../../theme/ThemeContext";
-import { typography, spacing, radius } from "../../theme";
+import { typography } from "../../theme";
+import { BUTTON_HEIGHT, rr, rs } from "../../theme/responsive";
 
 // variant: "primary" | "outline" | "ghost"
 export default function AppButton({
@@ -41,7 +42,7 @@ export default function AppButton({
       ) : (
         <>
           {icon}
-          <Text style={[typography.button, { color: textColor, marginLeft: icon ? spacing.sm : 0 }]}>
+          <Text style={[typography.button, { color: textColor, marginLeft: icon ? rs.sm : 0 }]}>
             {title}
           </Text>
         </>
@@ -52,8 +53,8 @@ export default function AppButton({
 
 const styles = StyleSheet.create({
   base: {
-    height: 52,
-    borderRadius: radius.lg,
+    height: BUTTON_HEIGHT,
+    borderRadius: rr.lg,
     alignItems: "center",
     justifyContent: "center",
     flexDirection: "row",

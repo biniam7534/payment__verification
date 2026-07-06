@@ -106,6 +106,8 @@ const translations = {
     uploadFailed: "Upload failed. Please try again.",
     verifyFailed: "Verification failed. Please try again.",
     darkModeDescription: "Easier on the eyes in low light. Your choice is saved automatically.",
+    bank: "Bank Account",
+    selectBank: "Select Bank",
   },
   am: {
     welcomeBack: "እንኳን ደህና መጡ",
@@ -194,6 +196,8 @@ const translations = {
     stepVerification: "ማረጋገጫ",
     fillAllFields: "ሁሉንም መስኮች ይሙሉ",
     passwordsMismatch: "የመግቢያ ቁልፎች አይዛመዱም",
+    bank: "ባንክ መለያ",
+    selectBank: "ባንክ ይምረጡ",
   },
   om: {
     welcomeBack: "Baga nagaan deebite",
@@ -282,6 +286,8 @@ const translations = {
     stepVerification: "Mirkaneessuu",
     fillAllFields: "Dirreewwan hunda guuti",
     passwordsMismatch: "Jechoonni icciitii wal hin fakkatu",
+    bank: "Akkaawuntii Baankii",
+    selectBank: "Baankii Filadhu",
   },
   ti: {
     welcomeBack: "እንቋዕ ብደሓን መጻእኩም",
@@ -370,6 +376,8 @@ const translations = {
     stepVerification: "ማረጋገጺ",
     fillAllFields: "ኩሉ ቦታታት መልእ",
     passwordsMismatch: "መሕለፍ ቃላት ኣይሰማማዕን",
+    bank: "ባንክ ኣካውንት",
+    selectBank: "ባንክ ምረጽ",
   },
 };
 
