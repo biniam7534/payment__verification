@@ -19,23 +19,23 @@ import {
   FlatList,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import ScreenContainer      from "../../components/common/ScreenContainer";
-import BalanceCard          from "../../components/dashboard/BalanceCard";
-import StatusFilterCard     from "../../components/dashboard/StatusFilterCard";
-import SupportedBanksList   from "../../components/dashboard/SupportedBanksList";
-import TransactionRow       from "../../components/dashboard/TransactionRow";
-import BankSelectionModal   from "../../components/common/BankSelectionModal";
-import Avatar               from "../../components/common/Avatar";
-import Card                 from "../../components/common/Card";
-import SectionHeader        from "../../components/common/SectionHeader";
-import EmptyState           from "../../components/common/EmptyState";
-import { useAppTheme }      from "../../theme/ThemeContext";
-import { useI18n }          from "../../i18n/I18nContext";
-import { useAuth }          from "../../store/AuthContext";
-import * as paymentsApi     from "../../services/api/paymentsApi";
-import * as businessApi     from "../../services/api/businessApi";
+import ScreenContainer from "../../components/common/ScreenContainer";
+import BalanceCard from "../../components/dashboard/BalanceCard";
+import StatusFilterCard from "../../components/dashboard/StatusFilterCard";
+import SupportedBanksList from "../../components/dashboard/SupportedBanksList";
+import TransactionRow from "../../components/dashboard/TransactionRow";
+import BankSelectionModal from "../../components/common/BankSelectionModal";
+import Avatar from "../../components/common/Avatar";
+import Card from "../../components/common/Card";
+import SectionHeader from "../../components/common/SectionHeader";
+import EmptyState from "../../components/common/EmptyState";
+import { useAppTheme } from "../../theme/ThemeContext";
+import { useI18n } from "../../i18n/I18nContext";
+import { useAuth } from "../../store/AuthContext";
+import * as paymentsApi from "../../services/api/paymentsApi";
+import * as businessApi from "../../services/api/businessApi";
 import { navigateToAppScreen } from "../../navigation/navigateTo";
-import { typography }       from "../../theme";
+import { typography } from "../../theme";
 import {
   rs, rr, scale, iconSize, screenPadding, moderateScale,
 } from "../../theme/responsive";
@@ -57,24 +57,24 @@ function buildCounts(transactions) {
 
 // ─── Status filter config ─────────────────────────────────────────────────────
 const STATUS_FILTERS = [
-  { key: "all",      labelKey: "allStatus" },
-  { key: "verified", labelKey: "verified"  },
-  { key: "pending",  labelKey: "pending"   },
-  { key: "failed",   labelKey: "failed"    },
+  { key: "all", labelKey: "allStatus" },
+  { key: "verified", labelKey: "verified" },
+  { key: "pending", labelKey: "pending" },
+  { key: "failed", labelKey: "failed" },
 ];
 
 // ─── Screen ───────────────────────────────────────────────────────────────────
 export default function HomeScreen({ navigation }) {
   const { colors, shadows } = useAppTheme();
-  const { t }               = useI18n();
-  const { user }            = useAuth();
+  const { t } = useI18n();
+  const { user } = useAuth();
 
-  const [summary, setSummary]             = useState({ totalVerifiedToday: 0, currency: "ETB", stats: {} });
+  const [summary, setSummary] = useState({ totalVerifiedToday: 0, currency: "ETB", stats: {} });
   const [allTransactions, setAllTransactions] = useState([]);
-  const [bankInfo, setBankInfo]           = useState({ provider: "cbe", bankName: "Commercial Bank of Ethiopia" });
+  const [bankInfo, setBankInfo] = useState({ provider: "cbe", bankName: "Commercial Bank of Ethiopia" });
   const [showBankModal, setShowBankModal] = useState(false);
-  const [activeStatus, setActiveStatus]   = useState("all");
-  const [selectedBank, setSelectedBank]   = useState(null);
+  const [activeStatus, setActiveStatus] = useState("all");
+  const [selectedBank, setSelectedBank] = useState(null);
 
   // ── Load data ──────────────────────────────────────────────────────────────
   const load = useCallback(async () => {
@@ -118,7 +118,7 @@ export default function HomeScreen({ navigation }) {
   );
 
   const displayName = user?.name?.split(" ")[0] || "Abel";
-  const notifSize   = scale(40, 0.4);
+  const notifSize = scale(40, 0.4);
 
   return (
     <ScreenContainer>
@@ -147,9 +147,9 @@ export default function HomeScreen({ navigation }) {
               shadows.sm,
               styles.notifBtn,
               {
-                width:           notifSize,
-                height:          notifSize,
-                borderRadius:    rr.pill,
+                width: notifSize,
+                height: notifSize,
+                borderRadius: rr.pill,
                 backgroundColor: colors.surface,
               },
             ]}
@@ -189,7 +189,18 @@ export default function HomeScreen({ navigation }) {
         <View style={styles.banksStrip}>
           <SupportedBanksList
             selectedBank={selectedBank}
-            onSelectBank={id => setSelectedBank(prev => prev === id ? null : id)}
+            onSelectBank={id => {
+              setSelectedBank(id);
+              navigateToAppScreen(navigation, "VerifyPayment", {
+                details: {
+                  id: "tx_mock_" + id,
+                  from: id,
+                  reference: "FT26149OJYLM",
+                  amount: 10.0,
+                  currency: summary.currency || "ETB",
+                }
+              });
+            }}
           />
         </View>
 
@@ -252,8 +263,8 @@ export default function HomeScreen({ navigation }) {
             styles.ctaBanner,
             {
               backgroundColor: colors.primaryDark,
-              borderRadius:    rr.lg,
-              opacity:         pressed ? 0.88 : 1,
+              borderRadius: rr.lg,
+              opacity: pressed ? 0.88 : 1,
             },
           ]}
         >
@@ -261,8 +272,8 @@ export default function HomeScreen({ navigation }) {
             style={[
               styles.ctaIcon,
               {
-                width:        notifSize,
-                height:       notifSize,
+                width: notifSize,
+                height: notifSize,
                 borderRadius: rr.pill,
               },
             ]}
@@ -302,68 +313,68 @@ const styles = StyleSheet.create({
 
   // Header
   headerRow: {
-    flexDirection:  "row",
-    alignItems:     "center",
+    flexDirection: "row",
+    alignItems: "center",
     justifyContent: "space-between",
-    marginBottom:   rs.md,
+    marginBottom: rs.md,
   },
   headerLeft: {
     flexDirection: "row",
-    alignItems:    "center",
+    alignItems: "center",
   },
   notifBtn: {
-    alignItems:     "center",
+    alignItems: "center",
     justifyContent: "center",
   },
 
   // Shared section spacing
   sectionGap: {
-    marginTop:    rs.lg,
+    marginTop: rs.lg,
     marginBottom: rs.sm,
   },
 
   // Status cards row — 4 equal cards side by side
   statusRow: {
-    flexDirection:    "row",
+    flexDirection: "row",
     marginHorizontal: -scale(4, 0.3),   // cancel out card's own marginHorizontal
-    marginBottom:     rs.xs,
+    marginBottom: rs.xs,
   },
 
   // Banks horizontal strip — bleeds past screen padding
   banksStrip: {
     marginHorizontal: -screenPadding,
-    paddingLeft:       screenPadding,
+    paddingLeft: screenPadding,
   },
 
   // Active filter pill
   activePillRow: {
     flexDirection: "row",
-    marginBottom:  rs.sm,
+    marginBottom: rs.sm,
   },
   activePill: {
-    flexDirection:     "row",
-    alignItems:        "center",
+    flexDirection: "row",
+    alignItems: "center",
     paddingHorizontal: rs.md,
-    paddingVertical:   rs.xs,
-    borderRadius:      rr.pill,
+    paddingVertical: rs.xs,
+    borderRadius: rr.pill,
   },
 
   // Transactions card
   txCard: {
     paddingHorizontal: rs.md,
-    marginBottom:      rs.md,
+    marginBottom: rs.md,
   },
 
   // CTA banner
   ctaBanner: {
     flexDirection: "row",
-    alignItems:    "center",
-    padding:       rs.md,
-    marginBottom:  rs.sm,
+    alignItems: "center",
+    padding: rs.md,
+    marginBottom: rs.sm,
   },
   ctaIcon: {
     backgroundColor: "rgba(255,255,255,0.18)",
-    alignItems:      "center",
-    justifyContent:  "center",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

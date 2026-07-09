@@ -23,8 +23,8 @@ import {
   useWindowDimensions,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { useAuth }  from "../../store/AuthContext";
-import { useI18n }  from "../../i18n/I18nContext";
+import { useAuth } from "../../store/AuthContext";
+import { useI18n } from "../../i18n/I18nContext";
 import {
   scale,
   moderateScale,
@@ -34,17 +34,18 @@ import {
   iconSize,
   screenPadding,
 } from "../../theme/responsive";
+import BunnaPayLogo from "../../components/common/BunnaPayLogo";
 
 // ─── Brand colors ─────────────────────────────────────────────────────────────
-const BG     = "#1A6B38";
-const BTN    = "#22A750";
+const BG = "#1A6B38";
+const BTN = "#22A750";
 const ACCENT = "#4ADE80";
-const TICKER_BG   = "#155D2E";   // slightly darker strip for the marquee
+const TICKER_BG = "#155D2E";   // slightly darker strip for the marquee
 
 // ─── Layout ───────────────────────────────────────────────────────────────────
 const INPUT_H = scale(52, 0.4);
-const BTN_H   = scale(52, 0.4);
-const H_PAD   = screenPadding;
+const BTN_H = scale(52, 0.4);
+const H_PAD = screenPadding;
 
 // ─── Marquee ticker ───────────────────────────────────────────────────────────
 /**
@@ -56,7 +57,7 @@ const H_PAD   = screenPadding;
  *   copy is already in place, then the animation resets to 0 instantly.
  */
 const TICKER_TEXT =
-  "Welcome back   •   Bunna Pay   •   የእውነተኛ ደርሰኝ ፣ ብልህ ማረጋገጫ   •   ";
+  "welcome to bunna verify የእውነተኛ ደረሰኝ ፡ ብልህ ማረጋገጫ   •   ";
 const TICKER_SPEED = 55;   // px per second — lower = slower
 
 function Marquee() {
@@ -71,9 +72,9 @@ function Marquee() {
 
     const anim = Animated.loop(
       Animated.timing(translateX, {
-        toValue:         -textWidth,
+        toValue: -textWidth,
         duration,
-        easing:          Easing.linear,
+        easing: Easing.linear,
         useNativeDriver: true,
       })
     );
@@ -108,10 +109,10 @@ function Marquee() {
 
 const mS = StyleSheet.create({
   strip: {
-    width:           "100%",
+    width: "100%",
     backgroundColor: TICKER_BG,
     paddingVertical: rs.xs + 2,
-    overflow:        "hidden",
+    overflow: "hidden",
   },
   clip: {
     overflow: "hidden",
@@ -120,41 +121,41 @@ const mS = StyleSheet.create({
     flexDirection: "row",
   },
   text: {
-    fontSize:      moderateScale(12),
-    color:         "rgba(255,255,255,0.85)",
-    fontWeight:    "500",
-    letterSpacing:  0.3,
+    fontSize: moderateScale(12),
+    color: "rgba(255,255,255,0.85)",
+    fontWeight: "500",
+    letterSpacing: 0.3,
     paddingHorizontal: rs.sm,
   },
 });
 
 // ─── Shield + checkmark hero icon ─────────────────────────────────────────────
 function ShieldIcon() {
-  const outerSize  = scale(120, 0.45);
-  const innerSize  = scale(88,  0.45);
-  const shieldSize = scale(54,  0.45);
+  const outerSize = scale(120, 0.45);
+  const innerSize = scale(88, 0.45);
+  const shieldSize = scale(54, 0.45);
 
   return (
     <View style={{
-      width:           outerSize,
-      height:          outerSize,
-      borderRadius:    outerSize / 2,
+      width: outerSize,
+      height: outerSize,
+      borderRadius: outerSize / 2,
       backgroundColor: "rgba(255,255,255,0.12)",
-      alignItems:      "center",
-      justifyContent:  "center",
+      alignItems: "center",
+      justifyContent: "center",
     }}>
       <View style={{
-        width:           innerSize,
-        height:          innerSize,
-        borderRadius:    innerSize / 2,
+        width: innerSize,
+        height: innerSize,
+        borderRadius: innerSize / 2,
         backgroundColor: "#155D2E",
-        alignItems:      "center",
-        justifyContent:  "center",
-        shadowColor:     "#000",
-        shadowOffset:    { width: 0, height: 4 },
-        shadowOpacity:   0.30,
-        shadowRadius:    10,
-        elevation:       6,
+        alignItems: "center",
+        justifyContent: "center",
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.30,
+        shadowRadius: 10,
+        elevation: 6,
       }}>
         <Ionicons name="shield-checkmark" size={shieldSize} color="#FFFFFF" />
       </View>
@@ -195,15 +196,15 @@ function GreenInput({ label, value, onChangeText, placeholder, secureTextEntry, 
 }
 
 const iS = StyleSheet.create({
-  label:  { fontSize: moderateScale(13), fontWeight: "500", color: "rgba(255,255,255,0.88)", marginBottom: rs.xs },
+  label: { fontSize: moderateScale(13), fontWeight: "500", color: "rgba(255,255,255,0.88)", marginBottom: rs.xs },
   wrap: {
     flexDirection: "row", alignItems: "center",
     height: INPUT_H, borderWidth: 1,
     borderColor: "rgba(255,255,255,0.25)", borderRadius: rr.md,
     paddingHorizontal: rs.md, backgroundColor: "rgba(255,255,255,0.13)",
   },
-  err:    { borderColor: "#FCA5A5" },
-  text:   { flex: 1, fontSize: moderateScale(14), color: "#FFFFFF" },
+  err: { borderColor: "#FCA5A5" },
+  text: { flex: 1, fontSize: moderateScale(14), color: "#FFFFFF" },
   errTxt: { fontSize: moderateScale(11), color: "#FCA5A5", marginTop: rs.xs },
 });
 
@@ -219,25 +220,25 @@ function LanguagePicker({ language, languages, onPress }) {
   );
 }
 const lS = StyleSheet.create({
-  row:   { flexDirection: "row", alignItems: "center", justifyContent: "center", paddingVertical: rs.sm, gap: rs.xs },
+  row: { flexDirection: "row", alignItems: "center", justifyContent: "center", paddingVertical: rs.sm, gap: rs.xs },
   label: { fontSize: moderateScale(13), color: "rgba(255,255,255,0.75)", marginHorizontal: rs.xs, fontWeight: "500" },
 });
 
 // ─── Screen ───────────────────────────────────────────────────────────────────
 export default function SignInScreen({ navigation }) {
-  const { signIn, isLoading }      = useAuth();
+  const { signIn, isLoading } = useAuth();
   const { t, language, languages } = useI18n();
 
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [password, setPassword]       = useState("");
-  const [remember, setRemember]       = useState(false);
-  const [errors, setErrors]           = useState({});
-  const [apiError, setApiError]       = useState("");
+  const [password, setPassword] = useState("");
+  const [remember, setRemember] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [apiError, setApiError] = useState("");
 
   function validate() {
     const e = {};
-    if (!phoneNumber.trim()) e.phone    = "Phone number is required";
-    if (!password)           e.password = "Password is required";
+    if (!phoneNumber.trim()) e.phone = "Phone number is required";
+    if (!password) e.password = "Password is required";
     return e;
   }
 
@@ -260,9 +261,6 @@ export default function SignInScreen({ navigation }) {
     >
       <StatusBar barStyle="light-content" backgroundColor={TICKER_BG} />
 
-      {/* ── Marquee ticker — above everything, full-width ────────────── */}
-      <Marquee />
-
       <ScrollView
         contentContainerStyle={S.scroll}
         keyboardShouldPersistTaps="handled"
@@ -271,17 +269,9 @@ export default function SignInScreen({ navigation }) {
       >
         {/* ── Hero ─────────────────────────────────────────────────── */}
         <View style={S.top}>
-          <ShieldIcon />
-
-          {/* Static title — "Welcome back" */}
-          <Text style={[S.title, { marginTop: vScale(18, 0.35) }]}>
-            Welcome back
-          </Text>
-
-          {/* Static subtitle — "Buna Pay" in brand style */}
-          <View style={S.brandRow}>
-            <Text style={S.brandBuna}>Buna</Text>
-            <Text style={S.brandPay}> Pay</Text>
+          <BunnaPayLogo size="lg" />
+          <View style={{ marginTop: rs.lg, width: "100%" }}>
+            <Marquee />
           </View>
         </View>
 
@@ -351,62 +341,62 @@ export default function SignInScreen({ navigation }) {
 
 // ─── Styles ───────────────────────────────────────────────────────────────────
 const S = StyleSheet.create({
-  root:   { flex: 1, backgroundColor: BG },
+  root: { flex: 1, backgroundColor: BG },
   scroll: { flexGrow: 1, backgroundColor: BG },
 
   // Hero
   top: {
-    alignItems:        "center",
-    paddingTop:        vScale(48, 0.35),
-    paddingBottom:     vScale(20, 0.35),
+    alignItems: "center",
+    paddingTop: vScale(48, 0.35),
+    paddingBottom: vScale(20, 0.35),
     paddingHorizontal: H_PAD,
-    backgroundColor:   BG,
+    backgroundColor: BG,
   },
   title: {
-    fontSize:      moderateScale(26),
-    fontWeight:    "700",
-    color:         "#FFFFFF",
+    fontSize: moderateScale(26),
+    fontWeight: "700",
+    color: "#FFFFFF",
     letterSpacing: 0.3,
-    textAlign:     "center",
+    textAlign: "center",
   },
 
   // "Buna Pay" brand name row below the title
   brandRow: {
     flexDirection: "row",
-    alignItems:    "baseline",
-    marginTop:     rs.xs,
+    alignItems: "baseline",
+    marginTop: rs.xs,
   },
   brandBuna: {
-    fontSize:      moderateScale(22),
-    fontWeight:    "800",
-    color:         "#A7F3A0",   // light green — pops against the dark green bg
+    fontSize: moderateScale(22),
+    fontWeight: "800",
+    color: "#A7F3A0",   // light green — pops against the dark green bg
     letterSpacing: 0.4,
   },
   brandPay: {
-    fontSize:      moderateScale(22),
-    fontWeight:    "800",
-    color:         "#FFFFFF",
+    fontSize: moderateScale(22),
+    fontWeight: "800",
+    color: "#FFFFFF",
     letterSpacing: 0.4,
   },
 
   // Form
   form: {
-    flex:              1,
+    flex: 1,
     paddingHorizontal: H_PAD,
-    paddingTop:        vScale(24, 0.35),
-    backgroundColor:   BG,
+    paddingTop: vScale(24, 0.35),
+    backgroundColor: BG,
   },
-  pwdRow:  { flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: rs.xs },
-  forgot:  { fontSize: moderateScale(12), color: "rgba(255,255,255,0.60)", fontWeight: "500" },
+  pwdRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: rs.xs },
+  forgot: { fontSize: moderateScale(12), color: "rgba(255,255,255,0.60)", fontWeight: "500" },
 
-  remRow:  { flexDirection: "row", alignItems: "center", marginTop: rs.xs, marginBottom: rs.lg },
+  remRow: { flexDirection: "row", alignItems: "center", marginTop: rs.xs, marginBottom: rs.lg },
   box: {
     width: scale(18, 0.3), height: scale(18, 0.3), borderRadius: scale(4, 0.3),
     borderWidth: 1.5, borderColor: "rgba(255,255,255,0.38)",
     alignItems: "center", justifyContent: "center",
     backgroundColor: "rgba(255,255,255,0.10)",
   },
-  boxOn:    { backgroundColor: BTN, borderColor: BTN },
+  boxOn: { backgroundColor: BTN, borderColor: BTN },
   remLabel: { fontSize: moderateScale(13), color: "rgba(255,255,255,0.78)", marginLeft: rs.sm },
 
   apiBox: {
@@ -425,7 +415,7 @@ const S = StyleSheet.create({
   },
   btnTxt: { fontSize: moderateScale(16), fontWeight: "700", color: "#FFFFFF", letterSpacing: 0.4 },
 
-  suRow:  { flexDirection: "row", justifyContent: "center", alignItems: "center", marginBottom: rs.md },
+  suRow: { flexDirection: "row", justifyContent: "center", alignItems: "center", marginBottom: rs.md },
   suGray: { fontSize: moderateScale(13), color: "rgba(255,255,255,0.55)" },
   suLink: { fontSize: moderateScale(13), color: ACCENT, fontWeight: "600" },
 });

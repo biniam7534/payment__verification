@@ -18,14 +18,14 @@ import { rs, rr, scale, moderateScale, iconSize } from "../../theme/responsive";
 
 // ─── Default bank list (can be overridden via props) ─────────────────────────
 export const DEFAULT_BANKS = [
-  { id: "telebirr",  name: "Telebirr",                        shortName: "Telebirr",  color: "#E63946", icon: "cellphone" },
-  { id: "oromia",    name: "Oromia Bank",                     shortName: "Oromia",    color: "#F4A261", icon: "bank" },
-  { id: "abyssinia", name: "Bank of Abyssinia",               shortName: "Abyssinia", color: "#2A9D8F", icon: "bank" },
-  { id: "coop",      name: "Cooperative Bank of Oromia",      shortName: "CoopBank",  color: "#E76F51", icon: "bank" },
-  { id: "zemen",     name: "Zemen Bank",                      shortName: "Zemen",     color: "#457B9D", icon: "bank" },
-  { id: "cbe",       name: "Commercial Bank of Ethiopia",     shortName: "CBE",       color: "#264653", icon: "bank" },
-  { id: "dashen",    name: "Dashen Bank",                     shortName: "Dashen",    color: "#6A4C93", icon: "bank" },
-  { id: "awash",     name: "Awash International Bank",        shortName: "Awash",     color: "#1B998B", icon: "bank" },
+  { id: "cbe", name: "Commercial Bank of Ethiopia", shortName: "CBE", color: "#F2A900", icon: "bank" },
+  { id: "telebirr", name: "Telebirr", shortName: "Telebirr", color: "#1863DC", icon: "cellphone" },
+  { id: "oromia", name: "Oromia Bank", shortName: "Oromia", color: "#F7941D", icon: "bank" },
+  { id: "abyssinia", name: "Bank of Abyssinia", shortName: "Abyssinia", color: "#004B93", icon: "bank" },
+  { id: "coop", name: "Cooperative Bank of Oromia", shortName: "CoopBank", color: "#1B7B3A", icon: "bank" },
+  { id: "zemen", name: "Zemen Bank", shortName: "Zemen", color: "#003865", icon: "bank" },
+  { id: "dashen", name: "Dashen Bank", shortName: "Dashen", color: "#003876", icon: "bank" },
+  { id: "awash", name: "Awash International Bank", shortName: "Awash", color: "#006838", icon: "bank" },
 ];
 
 // ─── Single bank chip ────────────────────────────────────────────────────────
@@ -40,9 +40,9 @@ function BankChip({ bank, selected, onPress, colors, shadows }) {
         shadows.sm,
         {
           backgroundColor: isActive ? bank.color : colors.surface,
-          borderWidth:     isActive ? 0 : 1,
-          borderColor:     colors.border,
-          opacity:         pressed ? 0.78 : 1,
+          borderWidth: isActive ? 0 : 1,
+          borderColor: colors.border,
+          opacity: pressed ? 0.78 : 1,
         },
       ]}
     >
@@ -69,8 +69,8 @@ function BankChip({ bank, selected, onPress, colors, shadows }) {
         style={[
           styles.chipLabel,
           {
-            color:      isActive ? "#FFFFFF" : colors.ink,
-            fontWeight: isActive ? "600"      : "400",
+            color: isActive ? "#FFFFFF" : colors.ink,
+            fontWeight: isActive ? "600" : "400",
           },
         ]}
         numberOfLines={1}
@@ -117,34 +117,34 @@ export default function SupportedBanksList({ banks, selectedBank, onSelectBank }
 const styles = StyleSheet.create({
   scrollContent: {
     paddingHorizontal: rs.xs,
-    paddingVertical:   rs.xs,
-    gap:               rs.sm,
+    paddingVertical: rs.xs,
+    gap: rs.sm,
   },
   chip: {
-    flexDirection:  "row",
-    alignItems:     "center",
-    borderRadius:   rr.pill,
-    paddingVertical:   rs.sm - 2,
+    flexDirection: "row",
+    alignItems: "center",
+    borderRadius: rr.pill,
+    paddingVertical: rs.sm - 2,
     paddingHorizontal: rs.md,
-    gap:               rs.xs,
+    gap: rs.xs,
     // Fixed width so all chips are the same size — looks clean in a row
     minWidth: scale(88, 0.5),
   },
   iconBubble: {
-    width:          scale(28, 0.4),
-    height:         scale(28, 0.4),
-    borderRadius:   rr.pill,
-    alignItems:     "center",
+    width: scale(28, 0.4),
+    height: scale(28, 0.4),
+    borderRadius: rr.pill,
+    alignItems: "center",
     justifyContent: "center",
   },
   chipLabel: {
-    fontSize:    moderateScale(12),
+    fontSize: moderateScale(12),
     letterSpacing: 0.1,
-    flex:        1,
+    flex: 1,
   },
   activeDot: {
-    width:        scale(6, 0.3),
-    height:       scale(6, 0.3),
+    width: scale(6, 0.3),
+    height: scale(6, 0.3),
     borderRadius: rr.pill,
   },
 });

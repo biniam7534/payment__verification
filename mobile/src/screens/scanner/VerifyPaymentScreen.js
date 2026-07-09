@@ -1,133 +1,154 @@
 import React, { useState } from "react";
-import { View, Text, Image, Pressable, ScrollView } from "react-native";
+import { View, Text, ScrollView } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import ScreenContainer from "../../components/common/ScreenContainer";
 import ScreenHeader from "../../components/common/ScreenHeader";
 import AppButton from "../../components/common/AppButton";
+import AppInput from "../../components/common/AppInput";
+import SupportedBanksList from "../../components/dashboard/SupportedBanksList";
 import { useAppTheme } from "../../theme/ThemeContext";
 import { useI18n } from "../../i18n/I18nContext";
+import { useAuth } from "../../store/AuthContext";
 import * as paymentsApi from "../../services/api/paymentsApi";
 import { navigateToAppScreen } from "../../navigation/navigateTo";
-import { formatCurrency } from "../../utils/format";
 import { typography, spacing, radius } from "../../theme";
-
-function DetailRow({ label, value, colors, last, highlight }) {
-  return (
-    <View
-      style={{
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
-        paddingVertical: spacing.md,
-        borderBottomWidth: last ? 0 : 1,
-        borderBottomColor: colors.border,
-      }}
-    >
-      <Text style={[typography.body, { color: colors.gray }]}>{label}</Text>
-      <Text
-        style={[
-          highlight ? typography.h3 : typography.bodyMedium,
-          { color: highlight ? colors.primaryDark : colors.ink },
-        ]}
-      >
-        {value}
-      </Text>
-    </View>
-  );
-}
+import { rs, iconSize } from "../../theme/responsive";
 
 export default function VerifyPaymentScreen({ navigation, route }) {
   const { colors, shadows } = useAppTheme();
   const { t } = useI18n();
-  const details = route?.params?.details || {};
+  const { user } = useAuth();
+
+  const initialDetails = route?.params?.details || {};
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  const [selectedBank, setSelectedBank] = useState(initialDetails.from?.toLowerCase() || "cbe");
+  const [reference, setReference] = useState(initialDetails.reference || "FT23001234ABC");
+  const [amount, setAmount] = useState(initialDetails.amount ? initialDetails.amount.toString() : "500.00");
+  const [senderName, setSenderName] = useState("Abebe Kebede");
+  const [senderPhone, setSenderPhone] = useState("0911 223 344");
+  const [receiptUrl, setReceiptUrl] = useState("https://receipt.url/abc");
 
   const handleVerify = async () => {
     setLoading(true);
     setError("");
     try {
+      const details = {
+        id: initialDetails.id || "tx_" + Date.now(),
+        from: senderName || "Abebe Kebede",
+        reference: reference,
+        amount: parseFloat(amount) || 500,
+        currency: initialDetails.currency || "ETB",
+        senderPhone: senderPhone || "0911 223 344",
+        selectedBank: selectedBank || "CBE",
+      };
       await paymentsApi.confirmPayment(details.id);
       navigateToAppScreen(navigation, "PaymentVerified", { details });
     } catch (e) {
-      setError(t("verifyFailed"));
+      setError("Verification failed. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
-  const handleReport = async () => {
-    try {
-      await paymentsApi.reportPaymentIssue(details.id, "user_reported");
-      navigation.goBack();
-    } catch (e) {
-      setError(t("verifyFailed"));
-    }
-  };
-
   return (
     <ScreenContainer>
-      <ScreenHeader title={t("verifyPayment")} />
+      <ScreenHeader
+        title={t("verifyPayment") || "Verify Payment"}
+        rightAction={<Ionicons name="time-outline" size={iconSize.md} color={colors.ink} />}
+      />
 
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ flexGrow: 1 }}>
-        <Text style={[typography.body, { color: colors.gray, marginBottom: spacing.md }]}>
-          {t("reviewPaymentDetails")}
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ flexGrow: 1, paddingBottom: rs.xl }}>
+
+        {/* 1. Select Provider */}
+        <Text style={[typography.h3, { color: colors.ink, marginBottom: rs.md, marginTop: rs.sm }]}>
+          1. Select Provider
         </Text>
-
-        <View style={[shadows.card, { backgroundColor: colors.surface, borderRadius: radius.lg, paddingHorizontal: spacing.md }]}>
-          <DetailRow label={t("from")} value={details.from || "—"} colors={colors} />
-          <DetailRow label={t("reference")} value={details.reference || "—"} colors={colors} />
-          <DetailRow
-            label={t("amount")}
-            value={formatCurrency(details.amount, details.currency || "ETB")}
-            colors={colors}
-            highlight
-            last
+        <View style={{ marginHorizontal: -spacing.md, paddingLeft: spacing.md, marginBottom: rs.lg }}>
+          <SupportedBanksList
+            selectedBank={selectedBank}
+            onSelectBank={id => setSelectedBank(id)}
           />
         </View>
 
-        {details.screenshotUri ? (
-          <View style={{ marginTop: spacing.lg }}>
-            <Text style={[typography.bodyMedium, { color: colors.ink, marginBottom: spacing.sm }]}>
-              {t("screenshot")}
-            </Text>
-            <View style={[shadows.card, { borderRadius: radius.lg, overflow: "hidden" }]}>
-              <Image
-                source={{ uri: details.screenshotUri }}
-                style={{ width: "100%", height: 220 }}
-                resizeMode="cover"
+        {/* 2. Payment Details */}
+        <Text style={[typography.h3, { color: colors.ink, marginBottom: rs.md }]}>
+          2. Payment Details
+        </Text>
+        <View style={{ marginBottom: rs.md }}>
+          <AppInput
+            label="Receipt ID / Reference *"
+            value={reference}
+            onChangeText={setReference}
+          />
+          <AppInput
+            label="Amount (ETB)"
+            value={amount}
+            onChangeText={setAmount}
+            keyboardType="numeric"
+          />
+          <View style={{ flexDirection: "row", gap: rs.md }}>
+            <View style={{ flex: 1 }}>
+              <AppInput
+                label="Sender Name (Optional)"
+                value={senderName}
+                onChangeText={setSenderName}
+              />
+            </View>
+            <View style={{ flex: 1 }}>
+              <AppInput
+                label="Sender Phone (Optional)"
+                value={senderPhone}
+                onChangeText={setSenderPhone}
+                keyboardType="phone-pad"
               />
             </View>
           </View>
-        ) : null}
+          <AppInput
+            label="Receipt URL (Optional)"
+            value={receiptUrl}
+            onChangeText={setReceiptUrl}
+            keyboardType="url"
+          />
+        </View>
 
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            backgroundColor: colors.success + "15",
-            borderRadius: radius.md,
-            padding: spacing.md,
-            marginTop: spacing.lg,
-          }}
-        >
-          <Ionicons name="shield-checkmark-outline" size={20} color={colors.success} />
-          <Text style={[typography.caption, { color: colors.ink, marginLeft: spacing.sm, flex: 1 }]}>
-            {t("verifyPaymentHint")}
+        {/* 3. Receiver (From Profile) */}
+        <Text style={[typography.h3, { color: colors.ink, marginBottom: rs.md }]}>
+          3. Receiver (From Profile)
+        </Text>
+        <View style={[shadows.card, { backgroundColor: colors.surface, borderRadius: radius.lg, padding: spacing.md, marginBottom: rs.xl, borderWidth: 1, borderColor: colors.border }]}>
+          <Text style={[typography.caption, { color: colors.gray, marginBottom: spacing.xs }]}>
+            Receiver Name
+          </Text>
+          <Text style={[typography.bodyMedium, { color: colors.ink, marginBottom: spacing.md }]}>
+            {user?.name || "Natnael Example"}
+          </Text>
+
+          <Text style={[typography.caption, { color: colors.gray, marginBottom: spacing.xs }]}>
+            Receiver Account
+          </Text>
+          <Text style={[typography.bodyMedium, { color: colors.ink }]}>
+            {user?.account || "1000017692643"}
           </Text>
         </View>
 
         {error ? (
-          <Text style={[typography.caption, { color: colors.danger, marginTop: spacing.md }]}>{error}</Text>
+          <Text style={[typography.caption, { color: colors.danger, marginBottom: rs.md, textAlign: "center" }]}>
+            {error}
+          </Text>
         ) : null}
 
-        <View style={{ flex: 1, minHeight: spacing.xl }} />
+        <View style={{ flex: 1 }} />
 
-        <AppButton title={t("verifyPayment")} onPress={handleVerify} loading={loading} style={shadows.button} />
-
-        <Pressable onPress={handleReport} style={{ alignSelf: "center", marginTop: spacing.md, marginBottom: spacing.md }}>
-          <Text style={[typography.caption, { color: colors.danger }]}>{t("somethingWrong")}</Text>
-        </Pressable>
+        <AppButton
+          title={t("verifyPayment") || "Verify Payment"}
+          icon={<Ionicons name="shield-checkmark" size={iconSize.sm} color="#fff" />}
+          onPress={handleVerify}
+          loading={loading}
+          style={shadows.button}
+        />
       </ScrollView>
     </ScreenContainer>
   );
