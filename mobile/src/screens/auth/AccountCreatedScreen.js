@@ -6,8 +6,7 @@ import AppButton from "../../components/common/AppButton";
 import { useAppTheme } from "../../theme/ThemeContext";
 import { useI18n } from "../../i18n/I18nContext";
 import { useAuth } from "../../store/AuthContext";
-import { typography } from "../../theme";
-import { rs, rr, scale, iconSize } from "../../theme/responsive";
+import { typography, spacing, radius } from "../../theme";
 
 export default function AccountCreatedScreen({ navigation }) {
   const { colors, shadows } = useAppTheme();
@@ -18,9 +17,8 @@ export default function AccountCreatedScreen({ navigation }) {
   const handleGoToDashboard = async () => {
     setLoading(true);
     try {
-      // Sign in with the credentials from registration so the user object
-      // carries the correct name (fullName) and phone number.
-      await signIn(registerDraft.phoneNumber, registerDraft.password ?? "");
+      // TODO: once the backend issues a session token at sign-up, store it instead of re-signing in here.
+      await signIn(registerDraft.phoneNumber, "");
     } finally {
       setLoading(false);
     }
@@ -30,20 +28,20 @@ export default function AccountCreatedScreen({ navigation }) {
     <ScreenContainer style={{ justifyContent: "center", alignItems: "center" }}>
       <View
         style={{
-          width: scale(110, 0.4),
-          height: scale(110, 0.4),
-          borderRadius: rr.pill,
+          width: 110,
+          height: 110,
+          borderRadius: radius.pill,
           backgroundColor: colors.primaryLight + "33",
           alignItems: "center",
           justifyContent: "center",
-          marginBottom: rs.lg,
+          marginBottom: spacing.lg,
         }}
       >
-        <Ionicons name="checkmark-circle" size={iconSize.xxl * 1.3} color={colors.primaryDark} />
+        <Ionicons name="checkmark-circle" size={84} color={colors.primaryDark} />
       </View>
       <Text style={[typography.h2, { color: colors.ink, textAlign: "center" }]}>{t("accountCreated")}</Text>
       <Text
-        style={[typography.body, { color: colors.gray, textAlign: "center", marginTop: rs.sm, marginBottom: rs.xl }]}
+        style={[typography.body, { color: colors.gray, textAlign: "center", marginTop: spacing.sm, marginBottom: spacing.xl }]}
       >
         {t("accountReady")}
       </Text>
