@@ -3,16 +3,6 @@
 .env.*
 !.env.example
 
-# Python / Django
-__pycache__/
-*.py[cod]
-.venv/
-venv/
-env/
-*.sqlite3
-media/
-staticfiles/
-
 # Node / React Native / Expo
 node_modules/
 .expo/
@@ -29,4 +19,3 @@ yarn-error.log*
 Thumbs.db
 .vscode/
 .idea/
-

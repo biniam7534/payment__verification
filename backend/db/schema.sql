@@ -1,0 +1,29 @@
+CREATE TABLE IF NOT EXISTS bunapay_users (
+    id BIGSERIAL PRIMARY KEY,
+    full_name VARCHAR(255) NOT NULL,
+    phone_number VARCHAR(20) NOT NULL UNIQUE,
+    email VARCHAR(254) NOT NULL DEFAULT '',
+    password_hash TEXT NOT NULL,
+    is_active BOOLEAN NOT NULL DEFAULT TRUE,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS bunapay_business_profiles (
+    id BIGSERIAL PRIMARY KEY,
+    user_id BIGINT NOT NULL UNIQUE REFERENCES bunapay_users(id) ON DELETE CASCADE,
+    business_name VARCHAR(255) NOT NULL DEFAULT '',
+    business_type VARCHAR(100) NOT NULL DEFAULT '',
+    receiver_name VARCHAR(255) NOT NULL DEFAULT '',
+    receiver_account VARCHAR(100) NOT NULL DEFAULT '',
+    default_provider VARCHAR(50) NOT NULL DEFAULT '',
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS bunapay_auth_tokens (
+    id BIGSERIAL PRIMARY KEY,
+    user_id BIGINT NOT NULL UNIQUE REFERENCES bunapay_users(id) ON DELETE CASCADE,
+    token_hash CHAR(64) NOT NULL UNIQUE,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);

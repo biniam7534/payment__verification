@@ -1,75 +1,36 @@
 # BunaPay Backend
 
-Django REST backend for the BunaPay (Blue X) payment verification app.
+Node.js and Express API for BunaPay. PostgreSQL stores accounts, business profiles, and authentication tokens.
 
-The backend owns:
-
-- User accounts and authentication
-- Business profile data
-- Payment verification logic (next sprint)
-- External provider API calls (next sprint)
-- Verification result saving (next sprint)
-- Dashboard summary data (next sprint)
-- Transaction history (next sprint)
-- Security and validation
-
-The backend is the source of truth. The mobile app sends requests and displays responses, but the backend decides the final verification status.
-
-## Folder Structure
+The backend runtime and tooling are Node.js, Express, and npm.
 
 ```text
 backend/
-  manage.py
-  config/
-    settings/
-      base.py
-      development.py
-      test.py
-    urls.py
-  apps/
-    accounts/          # register, login, logout, profile
-    verification/      # stub — payment verification (next sprint)
-    analytics/         # stub — dashboard (next sprint)
-  common/
-  requirements/
-  tests/
-  scripts/
-  docker-compose.yml
-  .env.example
+  db/schema.sql
+  src/
+    accounts.js
+    app.js
+    server.js
+    validation.js
+  test/
+  package.json
 ```
 
 ## Setup
 
 ```bash
 cd backend
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements/development.txt
 cp .env.example .env
-docker compose up -d
-python manage.py migrate
-python manage.py runserver
+npm install
+docker compose up -d db
+npm run dev
 ```
 
-Or use the dev script:
+The API creates its tables on startup. It listens on port `3000` by default. Set `DATABASE_URL` and `CORS_ALLOWED_ORIGINS` in `.env` for your environment.
 
-```bash
-./scripts/run_dev.sh
-```
+## Account API
 
-### Without Docker
-
-If Docker is not available, run tests with SQLite:
-
-```bash
-DJANGO_SETTINGS_MODULE=config.settings.test python manage.py test apps.accounts
-```
-
-For local development with PostgreSQL, start the database with `docker compose up -d` before running migrations.
-
-## API Endpoints
-
-All protected endpoints require:
+All endpoints are under `/api/accounts`. Protected endpoints require:
 
 ```text
 Authorization: Token <token>
@@ -77,11 +38,7 @@ Authorization: Token <token>
 
 ### Register
 
-```text
-POST /api/accounts/register/
-```
-
-Request:
+`POST /api/accounts/register/`
 
 ```json
 {
@@ -92,95 +49,32 @@ Request:
 }
 ```
 
-Response:
+Creates the account and its empty business profile, then returns a token and public user data.
 
-```json
-{
-  "success": true,
-  "message": "Registration successful.",
-  "token": "<token>",
-  "user": {
-    "id": 1,
-    "full_name": "Natnael Example",
-    "phone_number": "0911000000",
-    "email": "natnael@example.com"
-  }
-}
-```
+### Login and logout
 
-### Login
-
-```text
-POST /api/accounts/login/
-```
-
-Request:
-
-```json
-{
-  "phone_number": "0911000000",
-  "password": "securepass123"
-}
-```
-
-### Logout
-
-```text
-POST /api/accounts/logout/
-```
+- `POST /api/accounts/login/` with `phone_number` and `password` returns a token.
+- `POST /api/accounts/logout/` revokes the authenticated token.
 
 ### Profile
 
-```text
-GET /api/accounts/profile/
-PUT /api/accounts/profile/
-```
+- `GET /api/accounts/profile/` returns `user`, `business_profile`, and `scan_usage`.
+- `PUT /api/accounts/profile/` partially updates `full_name`, `email`, and business profile fields.
 
-GET response:
+Ethiopian phone numbers in `0911000000` or `+251911000000` format are accepted and stored in local format. Passwords are hashed; only a SHA-256 digest of each authentication token is stored.
 
-```json
-{
-  "success": true,
-  "user": {
-    "id": 1,
-    "full_name": "Natnael Example",
-    "phone_number": "0911000000"
-  },
-  "business_profile": {
-    "business_name": "Blue Shop",
-    "business_type": "Retail",
-    "receiver_name": "Natnael Example",
-    "receiver_account": "1000017692643",
-    "default_provider": "cbe"
-  },
-  "scan_usage": {
-    "used": 0,
-    "limit": 20
-  }
-}
-```
+### Responses
 
-PUT request:
-
-```json
-{
-  "full_name": "Natnael Example",
-  "business_name": "Blue Shop",
-  "business_type": "Retail",
-  "receiver_name": "Natnael Example",
-  "receiver_account": "1000017692643",
-  "default_provider": "cbe"
-}
-```
-
-### Error format
+Successful and failed responses use a consistent JSON envelope. Validation failures include field errors:
 
 ```json
 {
   "success": false,
   "message": "Enter a valid Ethiopian phone number (e.g. 0911000000 or +251911000000).",
   "errors": {
-    "phone_number": ["Enter a valid Ethiopian phone number (e.g. 0911000000 or +251911000000)."]
+    "phone_number": [
+      "Enter a valid Ethiopian phone number (e.g. 0911000000 or +251911000000)."
+    ]
   }
 }
 ```
@@ -188,22 +82,5 @@ PUT request:
 ## Tests
 
 ```bash
-DJANGO_SETTINGS_MODULE=config.settings.test python manage.py test apps.accounts
+npm test
 ```
-
-## Environment Variables
-
-| Variable | Description |
-|----------|-------------|
-| `SECRET_KEY` | Django secret key |
-| `DEBUG` | Enable debug mode |
-| `DATABASE_URL` | PostgreSQL connection URL |
-| `ALLOWED_HOSTS` | Comma-separated allowed hosts |
-| `CORS_ALLOWED_ORIGINS` | Comma-separated CORS origins for mobile dev |
-
-## Next Sprint
-
-- `POST /api/verification/verify/` with mock provider
-- `ScanUsage` model and limits
-- Dashboard and transaction history APIs
-- Real provider integrations (qbirr, v.odit.et, verify.et)
