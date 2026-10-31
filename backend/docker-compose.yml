@@ -2,11 +2,11 @@ services:
   db:
     image: postgres:16-alpine
     environment:
-      POSTGRES_DB: bunapay
-      POSTGRES_USER: bunapay
-      POSTGRES_PASSWORD: bunapay
+      POSTGRES_DB: ${DB_NAME:-payment}
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
     ports:
-      - "5432:5432"
+      - "${DB_PORT:-5432}:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
 

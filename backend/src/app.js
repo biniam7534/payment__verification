@@ -1,7 +1,8 @@
 import cors from "cors";
 import express from "express";
-import { createAccountsRouter } from "./accounts.js";
-import { RequestValidationError } from "./validation.js";
+import errorMiddleware from "./middlewares/errorMiddleware.js";
+import notFound from "./middlewares/notFound.js";
+import { createUserRouter } from "./routes/userRoutes.js";
 
 export function createApp(pool) {
   const app = express();
@@ -12,28 +13,29 @@ export function createApp(pool) {
 
   app.use(cors({ origin: allowedOrigins.length ? allowedOrigins : false }));
   app.use(express.json({ limit: "1mb" }));
-  app.get("/health", (_req, res) => res.json({ success: true }));
-  app.use("/api/accounts", createAccountsRouter(pool));
 
-  app.use((_req, res) => {
-    res.status(404).json({ success: false, message: "Not found." });
-  });
-
-  app.use((error, _req, res, _next) => {
-    if (error instanceof RequestValidationError) {
-      return res.status(error.status).json({
+  const healthCheck = async (_req, res) => {
+    try {
+      await pool.query("SELECT 1");
+      return res.json({
+        success: true,
+        message: "Backend and PostgreSQL connected successfully",
+      });
+    } catch (error) {
+      console.error("Health check could not reach PostgreSQL:", error);
+      return res.status(503).json({
         success: false,
-        message: error.message,
-        errors: error.errors,
+        message: "Database connection failed",
       });
     }
-    if (error instanceof SyntaxError && "body" in error) {
-      return res.status(400).json({ success: false, message: "Malformed JSON request body." });
-    }
+  };
 
-    console.error("Unhandled API error:", error);
-    return res.status(500).json({ success: false, message: "An unexpected error occurred." });
-  });
+  app.get("/api/health", healthCheck);
+  app.get("/health", healthCheck);
+  app.use("/api/users", createUserRouter(pool));
+
+  app.use(notFound);
+  app.use(errorMiddleware);
 
   return app;
 }
